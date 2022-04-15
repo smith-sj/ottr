@@ -1,37 +1,27 @@
 require "tty-prompt"
-require "json"
+require "colorize"
+require_relative "list.rb"
 
+prompt = TTY::Prompt.new
+list = List.new
+list.load_tasks
+# list.add_task("Clean room")
+# list.delete_task()
 
-# puts '  welcome to ottr'
-# choices = ['do the dishes', 'walk the dog', 'have a shower']
-# option = prompt.select("", choices)
-# puts option
+while true
+    list.load_tasks
+    system('cls') || system('clear')
 
-# def json_to_array(file)
-#     JSON.parse!(file)
-# end
-# class List
+    move_from = prompt.select("", list.list_task_descriptions)
+    list.select_task(move_from)
 
-#     attr_reader :tasks
-
-#     def initialize
-#         @tasks = []
-#     end
-
-#     def import_tasks(file)
-#         @tasks.push(file)
-#     end
-
-# end
-
-# prompt = TTY::Prompt.new
-# ottr = json_to_array(File.read('.ottr.json'))
-# descriptions = ottr.map {|o| o["description"]}
-# list = List.new
-
-# if ottr.length > 0
-#     list.import_tasks(descriptions)
-# end
-
-# option = prompt.select("", list.tasks)
-
+    system('cls') || system('clear')
+    
+    move_to = prompt.select("") do |menu| 
+        menu.default (list.id_to_index(move_from) + 1)
+        list.list_task_descriptions.each {|task| menu.choice task}
+    end
+    list.deselect_task(move_from)
+    list.move_task(move_from, move_to)
+    list.write_tasks    
+end
