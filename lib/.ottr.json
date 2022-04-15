@@ -1,0 +1,23 @@
+[
+    {
+        "id": "1",
+        "description": "Fold washing",
+        "status": "incomplete"
+
+    },
+    {   
+        "id": "2",
+        "description": "Go for walk",
+        "status": "incomplete"
+    },
+    {
+        "id": "3",
+        "description": "Make dinner",
+        "status": "incomplete"
+    },
+    {
+        "id": "4",
+        "description": "Do dishes",
+        "status": "incomplete"
+    }
+]
