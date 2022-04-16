@@ -13,5 +13,5 @@ module JSONHandler
     def json_array(file)
         JSON.parse!(load_json(file))
     end
-
+    
 end

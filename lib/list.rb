@@ -8,7 +8,6 @@ class List
 
     def initialize
         @tasks = []
-        @selected_task = 0
     end
 
     def load_tasks
@@ -57,21 +56,23 @@ class List
         @tasks.delete_if {|task| task["id"] == target}
     end
 
-    def select_task(task)
-        @selected_task = task
-    end
-
     def id_to_index(id)
         index = 0
         tasks.each_with_index {|t, i| t["id"] == id ? index = i : nil}
         index
     end
 
+    def is_selected?(id)
+        @tasks[id_to_index(id)]["is_selected?"] == true ? true : false;
+    end
+
     def select_task(id)
-        tasks.each {|t| t["id"] == id ? t["is_selected?"] = true : nil}
+        @selected_task = id
+        @tasks.each {|t| t["id"] == id ? t["is_selected?"] = true : nil}
     end
 
     def deselect_task(id)
+        @select_task = 0
         tasks.each {|t| t["id"] == id ? t["is_selected?"] = false : nil}
     end
 
