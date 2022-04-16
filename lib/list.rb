@@ -22,9 +22,24 @@ class List
     # if the task is selected it is returned green
     def list_task_descriptions
         @tasks.each_with_index.map do |task, index|
+            task["status"] == "complete" ?
+            {name: task["description"].colorize(:light_black), value: task["id"]} :
+            {task["description"] => task["id"]}
+        end
+    end
+
+    def list_task_mover
+        @tasks.each_with_index.map do |task, index|
             task["is_selected?"] ?
-                {task["description"].colorize(:green) => task["id"]} :
-                {task["description"] => task["id"]}
+                {task["description"].colorize(:green).blink => index} :
+                {task["description"] => index}
+        end
+    end
+
+    def list_greyed
+        @tasks.each_with_index.map do |task, index|
+            is_selected?(task["id"]) ? {name: task["description"], value: :BACK} : 
+            {name: task["description"].colorize(:light_black), value: task["id"], disabled: ""}
         end
     end
 
@@ -33,15 +48,17 @@ class List
     end
 
     def unique_id
-        task_ids().max() + 1
+        @tasks.length > 0 ?
+        task_ids().max() + 1 :
+        1
+    end
+
+    def rename_task(name)
+        @tasks[selected_task]["description"] = name
     end
 
     def move_task(from,to)
-        move_from = 0
-        move_to = 0
-        @tasks.each_with_index {|task, index| task["id"] == from ? move_from = index : 0}
-        @tasks.each_with_index {|task, index| task["id"] == to ? move_to = index : 0}
-        @tasks = @tasks.insert(move_to,@tasks.delete_at(move_from))
+        @tasks = @tasks.insert(to,@tasks.delete_at(from))
     end
 
     def add_task(description)
@@ -66,14 +83,41 @@ class List
         @tasks[id_to_index(id)]["is_selected?"] == true ? true : false;
     end
 
+    def selected_task
+        i = 0
+        @tasks.each_with_index do |task, index|
+            is_selected?(task["id"]) ? i = index : nil
+        end
+        return i
+    end
+
+    def selected_task_id
+        i = 0
+        @tasks.each_with_index do |task, index|
+            is_selected?(task["id"]) ? i = task["id"] : nil
+        end
+        return i
+    end
+
     def select_task(id)
-        @selected_task = id
         @tasks.each {|t| t["id"] == id ? t["is_selected?"] = true : nil}
     end
 
+
     def deselect_task(id)
-        @select_task = 0
-        tasks.each {|t| t["id"] == id ? t["is_selected?"] = false : nil}
+        @tasks.each {|t| t["id"] == id ? t["is_selected?"] = false : nil}
+    end
+
+    def deselect_all_tasks
+        @tasks.each {|t| t["is_selected?"] = false}
+    end
+
+    def complete_task
+        @tasks[selected_task()]["status"] = "complete"
+    end
+
+    def reopen_task
+        @tasks[selected_task()]["status"] = "incomplete"
     end
 
 end

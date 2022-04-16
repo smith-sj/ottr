@@ -1,1 +1,30 @@
-[{"id":1,"description":"Do the dishes","status":"incomplete","is_parent?":false,"is_selected?":false},{"id":2,"description":"Go for walk","status":"incomplete","is_parent?":false,"is_selected?":false},{"id":11,"description":"Go to bed","status":"incomplete","is_parent?":false,"is_selected?":false},{"id":6,"description":"Do the laundry","status":"incomplete","is_parent?":false,"is_selected?":false}]
+[
+    {
+        "id": 4,
+        "description": "Set up rspec",
+        "status": "incomplete",
+        "is_parent?": false,
+        "is_selected?": true
+    },
+    {
+        "id": 2,
+        "description": "Set up git",
+        "status": "incomplete",
+        "is_parent?": false,
+        "is_selected?": false
+    },
+    {
+        "id": 5,
+        "description": "Build a cool program",
+        "status": "incomplete",
+        "is_parent?": false,
+        "is_selected?": false
+    },
+    {
+        "id": 6,
+        "description": "Submit assignment",
+        "status": "incomplete",
+        "is_parent?": false,
+        "is_selected?": false
+    }
+]
