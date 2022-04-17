@@ -1,30 +1,39 @@
 [
     {
-        "id": 4,
-        "description": "Set up rspec",
+        "id": 3,
+        "description": "read criteria",
+        "status": "complete",
+        "is_parent?": false,
+        "is_selected?": false,
+        "child_tasks": []
+    },
+    {
+        "id": 1,
+        "description": "make subheadings",
         "status": "incomplete",
         "is_parent?": false,
-        "is_selected?": true
+        "is_selected?": false,
+        "child_tasks": []
     },
     {
         "id": 2,
-        "description": "Set up git",
-        "status": "incomplete",
-        "is_parent?": false,
-        "is_selected?": false
-    },
-    {
-        "id": 5,
-        "description": "Build a cool program",
-        "status": "incomplete",
-        "is_parent?": false,
-        "is_selected?": false
-    },
-    {
-        "id": 6,
-        "description": "Submit assignment",
-        "status": "incomplete",
-        "is_parent?": false,
-        "is_selected?": false
+        "description": "secondary research",
+        "status": "complete",
+        "is_parent?": true,
+        "is_selected?": false,
+        "child_tasks": [
+            {
+                "id": 4,
+                "description": "start with wgsn reports",
+                "status": "incomplete",
+                "is_selected_child?": false
+            },
+            {
+                "id": 5,
+                "description": "edited reports",
+                "status": "incomplete",
+                "is_selected_child?": false
+            }
+        ]
     }
 ]

@@ -24,27 +24,43 @@ class List
         @tasks.each_with_index.map do |task, index|
             task["status"] == "complete" ?
             {name: task["description"].colorize(:light_black), value: task["id"]} :
-            {task["description"] => task["id"]}
+            task["is_parent?"] == true ?
+                {"#{task["description"]} ▸" => task["id"]} :
+                {task["description"] => task["id"]}
+        end
+    end
+
+    def list_child_descriptions
+        @tasks[selected_task()]["child_tasks"].map do |task|
+            task["status"] == "complete" ?
+            {name: "#{task["description"]}".colorize(:light_black), value: task["id"]} :
+            {"#{task["description"]}" => task["id"]}
         end
     end
 
     def list_task_mover
         @tasks.each_with_index.map do |task, index|
             task["is_selected?"] ?
-                {task["description"].colorize(:green).blink => index} :
+                {task["description"].colorize(:cyan).blink => index} :
                 {task["description"] => index}
         end
     end
 
     def list_greyed
         @tasks.each_with_index.map do |task, index|
-            is_selected?(task["id"]) ? {name: task["description"], value: :BACK} : 
+            is_selected?(task["id"]) ? task["is_parent?"] == true ? {name: "#{task["description"]} ▾", value: :BACK} : {name: "#{task["description"]}", value: :BACK} : 
             {name: task["description"].colorize(:light_black), value: task["id"], disabled: ""}
         end
     end
 
     def task_ids
-        @tasks.map {|task| task["id"]}
+        all_task_ids = @tasks.map {|task| task["id"]}
+        @tasks.each do |task|
+            task["child_tasks"].each do |child|
+                all_task_ids.push(child["id"])
+            end
+        end
+        all_task_ids
     end
 
     def unique_id
@@ -66,7 +82,18 @@ class List
             "id"=>unique_id(),
             "description"=>description,
             "status"=>"incomplete",
-            "is_parent?"=>false})
+            "is_parent?"=>false,
+            "is_selected?"=>false,
+            "child_tasks"=>[]})
+    end
+
+    def add_child_task(description)
+        @tasks[selected_task()]["child_tasks"].push({
+            "id"=>unique_id(),
+            "description"=>description,
+            "status"=>"incomplete",
+            "is_selected_child?"=>false})
+        @tasks[selected_task()]["is_parent?"] = true
     end
 
     def delete_task(target)
