@@ -21,6 +21,7 @@ class Menu
     end
 
     def construct(list)
+        system('cls') || system('clear')
         @loads += 1
         TTY::Prompt.new.select("OTTR LIST".bold, active_color: :cyan, symbols: {marker: "•"}) do |menu|
             menu.default list.selected_task + 1
@@ -31,6 +32,7 @@ class Menu
     end
 
     def move(list)
+        system('cls') || system('clear')
         move_options = (list.list_task_mover << @DISABLED_DEFAULTS).flatten
         move_from = list.selected_task 
         move_to = TTY::Prompt.new.select("OTTR LIST".bold, active_color: :cyan, symbols: {marker: "•", cross: " "}) do |menu| 

@@ -7,19 +7,19 @@ describe List do
             @list = List.new
             @list.instance_variable_set(:@tasks, [{"id"=>6,
                 "description"=>"Do the laundry",
-                "status"=>"incomplete",
+                "is_complete?"=>false,
                 "is_parent?"=>false,
                 "is_selected?"=>false},
             {
                 "id"=>8,
                 "description"=>"Go for walk",
-                "status"=>"incomplete",
+                "is_complete?"=>false,
                 "is_parent?"=>false,
                 "is_selected?"=>false},
             {
                 "id"=>4,
                 "description"=>"Wash the car",
-                "status"=>"incomplete",
+                "is_complete?"=>false,
                 "is_parent?"=>false,
                 "is_selected?"=>false}])
         end
@@ -72,19 +72,19 @@ describe List do
             @list.instance_variable_set(:@tasks, [{
                 "id"=>6,
                 "description"=>"Do the laundry",
-                "status"=>"incomplete",
+                "is_complete?"=>false,
                 "is_parent?"=>false,
                 "is_selected?"=>false},
             {
                 "id"=>8,
                 "description"=>"Go for walk",
-                "status"=>"incomplete",
+                "is_complete?"=>false,
                 "is_parent?"=>false,
                 "is_selected?"=>true},
             {
                 "id"=>4,
                 "description"=>"Wash the car",
-                "status"=>"incomplete",
+                "is_complete?"=>false,
                 "is_parent?"=>false,
                 "is_selected?"=>false}])
         end

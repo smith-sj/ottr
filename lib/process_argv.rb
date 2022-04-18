@@ -1,15 +1,20 @@
-# module ProcessARGV
+require_relative 'list.rb'
 
-#     def init_status
-#         File.exist?('./.ottr.txt')
-#     end
+module ProcessARGV
 
-#     def initialize_ottr(init_status)
-#         if init_status
-#             puts "already init"
-#         else
-            
-#         return already_init?
-#     end
+    @@init_status = File.exist?('./.ottr.json')
+    
+    def self.init_status
+        @@init_status
+    end
 
-# end
+    def initialize_ottr
+        if @@init_status == true
+            puts "already initialized"
+        else
+            List.new.write_tasks
+            puts "ottr initialized"
+        end
+    end
+
+end
