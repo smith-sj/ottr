@@ -1,1 +1,33 @@
-[{"id":3,"description":"Task 3","is_complete?":false,"is_parent?":false,"is_selected?":false,"child_tasks":[]},{"id":1,"description":"Task 1","is_complete?":false,"is_parent?":true,"is_selected?":true,"child_tasks":[{"id":4,"description":"Child Task 1","is_complete?":false,"is_selected_child?":false}]},{"id":2,"description":"Task 2","is_complete?":false,"is_parent?":false,"is_selected?":false,"child_tasks":[]}]
+[
+    {
+        "id": 3,
+        "description": "Task 3",
+        "is_complete?": false,
+        "is_parent?": false,
+        "is_selected?": false,
+        "child_tasks": []
+    },
+    {
+        "id": 1,
+        "description": "Task 1",
+        "is_complete?": false,
+        "is_parent?": false,
+        "is_selected?": true,
+        "child_tasks": [
+            {
+                "id": 4,
+                "description": "Child Task 1",
+                "is_complete?": false,
+                "is_selected_child?": false
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "description": "Task 2",
+        "is_complete?": false,
+        "is_parent?": false,
+        "is_selected?": false,
+        "child_tasks": []
+    }
+]

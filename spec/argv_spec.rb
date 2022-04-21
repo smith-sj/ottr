@@ -3,7 +3,7 @@
 # include ProcessARGV
 
 # describe ARGV do
-       
+
 #     it "should return false if init is not present" do
 #           expect(already_init?(false)).to eq(false)
 #     end
