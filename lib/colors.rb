@@ -1,10 +1,12 @@
 module Colors
+  @@MENU = :cyan
+  @@DISABLED = :light_black
 
-    @@MENU_COLOR = :cyan
+  def self.MENU
+    @@MENU
+  end
 
-    def self.MENU_COLOR
-        @@MENU_COLOR
-    end
-
-
+  def self.DISABLED
+    @@DISABLED
+  end
 end

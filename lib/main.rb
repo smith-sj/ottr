@@ -4,7 +4,7 @@ require_relative 'sub_menu'
 require_relative 'list'
 require_relative 'menu'
 require_relative 'process_argv'
-include ProcessARGV
+require_relative 'colors'
 
 if ARGV[0] == 'init'
   ProcessARGV.initialize_ottr
@@ -21,7 +21,7 @@ if ProcessARGV.init_status == true
   list.write_tasks
 
   while true
-    
+
     list.load_tasks
     menu.populate_options(list.list_task_descriptions)
     answer = menu.construct(list)
@@ -33,7 +33,7 @@ if ProcessARGV.init_status == true
       sub_menu = SubMenu.new
       sub_menu.populate_parent_options(list.list_greyed, list, list.list_child_descriptions)
       subanswer = sub_menu.construct(list, false)
-      list.select_child_task(answer,subanswer)
+      list.select_child_task(answer, subanswer)
       if subanswer == :DELETE
         sub_menu.delete(list)
       elsif subanswer == :MOVE
@@ -43,8 +43,8 @@ if ProcessARGV.init_status == true
                                    value: (list.tasks[list.selected_task]['description']).to_s)
         list.rename_task(name)
       elsif subanswer == :ADD
-        name = name = TTY::Prompt.new.ask(" Enter new description:\n")
-        list.add_child_task(name)
+        name = TTY::Prompt.new.ask(" Enter new description:\n")
+        list.add_child_task(name) if name != nil
       elsif subanswer.instance_of?(Integer)
         sub_menu = SubMenu.new
         sub_menu.populate_child_comp_options(list.list_all_greyed, list, list.list_child_descriptions_greyed)
@@ -59,14 +59,13 @@ if ProcessARGV.init_status == true
       end
       list.write_tasks
 
-      
     # TASK: LOAD TASK MENU (PARENT)
     elsif answer.instance_of?(Integer) && list.tasks[list.id_to_index(answer)]['is_parent?'] == true
       list.select_task(answer)
       sub_menu = SubMenu.new
       sub_menu.populate_parent_options(list.list_greyed, list, list.list_child_descriptions)
       subanswer = sub_menu.construct(list, false)
-      list.select_child_task(answer,subanswer)
+      list.select_child_task(answer, subanswer)
       if subanswer == :DELETE
         sub_menu.delete(list)
       elsif subanswer == :MOVE
@@ -76,9 +75,8 @@ if ProcessARGV.init_status == true
                                    value: (list.tasks[list.selected_task]['description']).to_s)
         list.rename_task(name)
       elsif subanswer == :ADD
-        name = name = TTY::Prompt.new.ask(" Enter new description:\n")
-        list.add_child_task(name)
-
+        name = TTY::Prompt.new.ask(" Enter new description:\n")
+        list.add_child_task(name) if name != nil
 
       # LOAD CHILD TASK SUB MENU (INCOMPLETE)
       elsif subanswer.instance_of?(Integer) && list.is_child_complete? == false
@@ -96,7 +94,7 @@ if ProcessARGV.init_status == true
           list.rename_child_task(name)
         elsif subanswer == :COMPLETE
           list.complete_child_task
-          list.check_for_complete_parent == true ? list.complete_task : nil
+          list.complete_task if list.check_for_complete_parent
         end
         list.deselect_child_task
         list.write_tasks
@@ -129,14 +127,12 @@ if ProcessARGV.init_status == true
       elsif subanswer == :RENAME
         name = TTY::Prompt.new.ask(" Enter new description:\n",
                                    value: (list.tasks[list.selected_task]['description']).to_s)
-        name == '' ? return : nil
-
-        list.rename_task(name)
+        list.rename_task(name) if name != nil
       elsif subanswer == :COMPLETE
         list.complete_task
       elsif subanswer == :ADD
-        name = name = TTY::Prompt.new.ask(" Enter a description:\n")
-        list.add_child_task(name)
+        name = TTY::Prompt.new.ask(" Enter a description:\n")
+        list.add_child_task(name) if name != nil
       end
       list.write_tasks
 
@@ -155,8 +151,8 @@ if ProcessARGV.init_status == true
 
     # ADD TASK
     elsif answer == :ADD
-      name = name = TTY::Prompt.new.ask(" Enter a description:\n")
-      list.add_task(name)
+      name = TTY::Prompt.new.ask(" Enter a description:\n")
+      list.add_task(name) if name != nil
       list.write_tasks
 
     # QUIT

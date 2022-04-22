@@ -18,27 +18,31 @@ class List
   end
 
   # returns an array of hashes containing task description and ID
-  # if the task is selected it is returned green
   def list_task_descriptions
     @tasks.each_with_index.map do |task, _index|
+      #if task is complete it will be returned as disabled color
       if task['is_complete?']
-        task['is_parent?'] ?
-        { name: "#{task['description']} ▸".colorize(:light_black), value: task['id'] } :
-        { name: task['description'].colorize(:light_black), value: task['id'] }
+        # if task is a parent it will be returned with an arrow
+        if task['is_parent?']
+          { name: "#{task['description']} ▸".colorize(Colors.DISABLED), value: task['id'] }
+        else
+          { name: task['description'].colorize(Colors.DISABLED), value: task['id'] }
+        end
       elsif task['is_parent?']
-        { "#{task['description']} ▸" => task['id'] }
+        { name: "#{task['description']} ▸", value: task['id'] }
       else
-          { task['description'] => task['id'] }
+        { name: task['description'], value: task['id'] }
       end
     end
   end
 
   def list_child_descriptions
     @tasks[selected_task]['child_tasks'].map do |task|
-      if task['is_complete?'] == true
-        { name: (task['description']).to_s.colorize(:light_black), value: task['id'] }
+      # if child task is complete it will be returned with disabled color
+      if task['is_complete?']
+        { name: task['description'].colorize(Colors.DISABLED), value: task['id'] }
       else
-        { (task['description']).to_s => task['id'] }
+        { task['description'] => task['id'] }
       end
     end
   end
@@ -48,7 +52,7 @@ class List
       if task['is_selected_child?']
         { (task['description']).to_s => task['id'] }
       else
-        { name: (task['description']).to_s.colorize(:light_black), value: task['id'], disabled: '' }
+        { name: (task['description']).to_s.colorize(Colors.DISABLED), value: task['id'], disabled: '' }
       end
     end
   end
@@ -76,24 +80,26 @@ class List
   def list_greyed
     @tasks.each_with_index.map do |task, _index|
       if is_selected?(task['id'])
-        if task['is_parent?'] == true
-          task['is_complete?'] ?
-          { name: "#{task['description']} ▾".colorize(:light_black), value: :BACK } :
-          { name: "#{task['description']} ▾", value: :BACK }
+        if task['is_parent?']
+          if task['is_complete?']
+            { name: "#{task['description']} ▾".colorize(Colors.DISABLED), value: :BACK }
+          else
+            { name: "#{task['description']} ▾", value: :BACK }
+          end
         else
           {
             name: (task['description']).to_s, value: :BACK
           }
         end
       else
-        { name: task['description'].colorize(:light_black), value: task['id'], disabled: '' }
+        { name: task['description'].colorize(Colors.DISABLED), value: task['id'], disabled: '' }
       end
     end
   end
 
   def list_all_greyed
     @tasks.each_with_index.map do |task, _index|
-      { name: task['description'].colorize(:light_black), value: task['id'], disabled: '' }
+      { name: task['description'].colorize(Colors.DISABLED), value: task['id'], disabled: '' }
     end
   end
 
@@ -154,47 +160,47 @@ class List
     @tasks[selected_task]['is_complete?'] = false
   end
 
-  def delete_task(target)
-    @tasks.delete_if { |task| task['id'] == target }
+  def delete_task
+    @tasks.delete_at(selected_task)
   end
 
-  def delete_child_task(_target)
+  def delete_child_task
     @tasks[selected_task]['child_tasks'].delete_at(selected_child_task)
-    @tasks[selected_task]['child_tasks'].length < 1 ? @tasks[selected_task]['is_parent?'] = false : nil
+     @tasks[selected_task]['is_parent?'] = false if @tasks[selected_task]['child_tasks'].length < 1
   end
 
   def id_to_index(id)
     index = 0
-    tasks.each_with_index { |t, i| t['id'] == id ? index = i : nil }
+    tasks.each_with_index { |t, i| index = i if t['id'] == id}
     index
   end
 
   def child_id_to_index(pid, cid)
     index = 0
-    tasks[id_to_index(pid)]['child_tasks'].each_with_index { |t, i| t['id'] == cid ? index = i : nil }
+    tasks[id_to_index(pid)]['child_tasks'].each_with_index { |t, i| index = i if t['id'] == cid}
     index
   end
 
   def is_selected?(id)
-    @tasks[id_to_index(id)]['is_selected?'] == true
+    @tasks[id_to_index(id)]['is_selected?']
   end
 
   def is_selected_child?(id)
-    @tasks[selected_task]['child_tasks'][child_id_to_index(selected_task_id, id)]["is_selected_child?"] == true
+    @tasks[selected_task]['child_tasks'][child_id_to_index(selected_task_id, id)]['is_selected_child?']
   end
 
   def selected_task
     i = 0
     @tasks.each_with_index do |task, index|
-      is_selected?(task['id']) ? i = index : nil
+      i = index if is_selected?(task['id'])
     end
     i
   end
 
   def selected_task_id
     i = 0
-    @tasks.each_with_index do |task, _index|
-      is_selected?(task['id']) ? i = task['id'] : nil
+    @tasks.each do |task|
+      i = task['id'] if is_selected?(task['id'])
     end
     i
   end
@@ -206,33 +212,33 @@ class List
   def selected_child_task
     i = 0
     @tasks[selected_task]['child_tasks'].each_with_index do |task, index|
-      task['is_selected_child?'] ? i = index : nil
+      i = index if task['is_selected_child?']
     end
     i
   end
 
   def selected_child_task_id
     i = 0
-    @tasks[selected_task]['child_tasks'].each_with_index do |task, _index|
-      is_selected_child?(task['id']) ? i = task['id'] : nil
+    @tasks[selected_task]['child_tasks'].each_with_index do |task|
+      i = task['id'] if is_selected_child?(task['id'])
     end
     i
   end
 
   def select_task(id)
-    @tasks.each { |t| t['id'] == id ? t['is_selected?'] = true : nil }
+    @tasks.each { |t| t['is_selected?'] = true if t['id'] == id}
   end
 
   def select_child_task(pid, cid)
-    @tasks[id_to_index(pid)]['child_tasks'].each { |t| t['id'] == cid ? t['is_selected_child?'] = true : nil }
+    @tasks[id_to_index(pid)]['child_tasks'].each { |t| t['is_selected_child?'] = true if t['id'] == cid}
   end
 
   def deselect_task(id)
-    @tasks.each { |t| t['id'] == id ? t['is_selected?'] = false : nil }
+    @tasks.each { |t| t['is_selected?'] = false if t['id'] == id}
   end
 
   def deselect_child_task
-    @tasks[selected_task]["child_tasks"].each { |t| t['is_selected'] == true ? t['is_selected?'] = false : nil }
+    @tasks[selected_task]['child_tasks'].each { |t| t['is_selected?'] = false if t['is_selected']}
   end
 
   def deselect_all_tasks
@@ -270,8 +276,12 @@ class List
 
   def check_for_complete_parent
     complete = true
-    @tasks[selected_task]['child_tasks'].each do |child_task|
-      child_task['is_complete?'] == true ? nil : complete = false
+    if @tasks[selected_task]['child_tasks'].length > 0
+      @tasks[selected_task]['child_tasks'].each do |child_task|
+        complete = false if !child_task['is_complete?']
+      end
+    else
+      complete = false
     end
     complete
   end
@@ -279,7 +289,7 @@ class List
   def count_tasks
     amount_of_tasks = @tasks.length
     @tasks.each do |task|
-      task["is_parent?"] ? amount_of_tasks -= 1 : nil
+      amount_of_tasks -= 1 if task['is_parent?']
       amount_of_tasks += task['child_tasks'].length
     end
     amount_of_tasks
@@ -288,9 +298,9 @@ class List
   def count_complete_tasks
     complete_tasks = 0
     @tasks.each do |task|
-      task['is_parent?'] == false && task["is_complete?"] == true ? complete_tasks += 1 : nil 
+      complete_tasks += 1 if !task['is_parent?'] && task['is_complete?']
       task['child_tasks'].each do |child_task|
-        child_task["is_complete?"] == true ? complete_tasks += 1 : nil
+        complete_tasks += 1 if child_task['is_complete?']
       end
     end
     complete_tasks

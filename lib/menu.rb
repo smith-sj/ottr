@@ -3,33 +3,37 @@ require 'colorize'
 require 'tty-box'
 require_relative 'list'
 require_relative 'progress'
-require_relative 'colors'
-include Colors
+
 class Menu
+
   attr_reader :options
 
   def initialize
     @options = []
     @DEFAULTS = [
-      { name: '  Add task'.colorize(Colors.MENU_COLOR), value: :ADD },
-      { name: '  Quit'.colorize(Colors.MENU_COLOR), value: :QUIT }
+      { name: '  Add task'.colorize(Colors.MENU), value: :ADD },
+      { name: '  Quit'.colorize(Colors.MENU), value: :QUIT }
     ]
     @DISABLED_DEFAULTS = [
-      { name: '  Add task'.colorize(:light_black), value: :ADD, disabled: '' },
-      { name: '  Quit'.colorize(:light_black), value: :QUIT, disabled: '' }
+      { name: '  Add task'.colorize(Colors.DISABLED), value: :ADD, disabled: '' },
+      { name: '  Quit'.colorize(Colors.DISABLED), value: :QUIT, disabled: '' }
     ]
     @loads = 0
   end
+
+  # POPULATES MAIN MENU WITH TASKS AND DEFAULT OPTIONS
 
   def populate_options(tasks)
     @options = (tasks << @DEFAULTS).flatten
   end
 
+  # CONSTRUCTS MAIN MENU
+
   def construct(list)
     @loads += 1
     system('cls') || system('clear')
     Progress.new(list)
-    TTY::Prompt.new.select("OTTR LIST".bold, active_color: :cyan, symbols: { marker: '•' }) do |menu|
+    TTY::Prompt.new.select('OTTR LIST'.bold, active_color: :cyan, symbols: { marker: '•' }) do |menu|
       menu.default list.selected_task + 1
       menu.per_page 20
       menu.help @loads > 1 ? '' : "\n(Use ↑/↓ to navigate,\npress Enter to select.\nScroll for more options)"
@@ -37,12 +41,14 @@ class Menu
     end
   end
 
+  # CONSTRUCTS A MENU FOR MOVING TASK
+
   def move(list)
     system('cls') || system('clear')
     Progress.new(list)
     move_options = (list.list_task_mover << @DISABLED_DEFAULTS).flatten
     move_from = list.selected_task
-    move_to = TTY::Prompt.new.select("OTTR LIST".bold, active_color: :cyan,
+    move_to = TTY::Prompt.new.select('OTTR LIST'.bold, active_color: :cyan,
                                                        symbols: { marker: '•', cross: ' ' }) do |menu|
       menu.per_page 20
       menu.help 'Select a new position for task (↑/↓)'

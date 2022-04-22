@@ -13,4 +13,3 @@ module JSONHandler
     JSON.parse!(load_json(file))
   end
 end
-
