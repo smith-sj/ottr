@@ -11,6 +11,8 @@ if ARGV[0] == 'init'
   return
 end
 
+
+
 if ProcessARGV.init_status == true
 
   list = List.new
@@ -28,7 +30,7 @@ if ProcessARGV.init_status == true
     list.deselect_all_tasks
 
     # TASK: LOAD TASK MENU (PARENT, COMPLETE)
-    if answer.instance_of?(Integer) && list.tasks[list.id_to_index(answer)]['is_parent?'] == true && list.tasks[list.id_to_index(answer)]['is_complete?'] == true
+    if answer.instance_of?(Integer) && list.tasks[list.id_to_index(answer)]['is_parent?'] && list.tasks[list.id_to_index(answer)]['is_complete?']
       list.select_task(answer)
       sub_menu = SubMenu.new(list)
       sub_menu.populate_parent_options
@@ -39,11 +41,10 @@ if ProcessARGV.init_status == true
       elsif subanswer == :MOVE
         menu.move
       elsif subanswer == :RENAME
-        name = TTY::Prompt.new.ask(" Enter new description:\n",
-                                   value: (list.tasks[list.selected_task]['description']).to_s)
-        list.rename_task(name)
+        name = sub_menu.rename_task
+        list.rename_task(name) if name != nil
       elsif subanswer == :ADD
-        name = TTY::Prompt.new.ask(" Enter new description:\n")
+        name = sub_menu.name_task
         list.add_child_task(name) if name != nil
       elsif subanswer.instance_of?(Integer)
         sub_menu = SubMenu.new(list)
@@ -60,7 +61,7 @@ if ProcessARGV.init_status == true
       list.write_tasks
 
     # TASK: LOAD TASK MENU (PARENT)
-    elsif answer.instance_of?(Integer) && list.tasks[list.id_to_index(answer)]['is_parent?'] == true
+    elsif answer.instance_of?(Integer) && list.tasks[list.id_to_index(answer)]['is_parent?']
       list.select_task(answer)
       sub_menu = SubMenu.new(list)
       sub_menu.populate_parent_options
@@ -71,11 +72,10 @@ if ProcessARGV.init_status == true
       elsif subanswer == :MOVE
         menu.move
       elsif subanswer == :RENAME
-        name = TTY::Prompt.new.ask(" Enter new description:\n",
-                                   value: (list.tasks[list.selected_task]['description']).to_s)
-        list.rename_task(name)
+        name = sub_menu.rename_task
+        list.rename_task(name) if name != nil
       elsif subanswer == :ADD
-        name = TTY::Prompt.new.ask(" Enter new description:\n")
+        name = sub_menu.name_task
         list.add_child_task(name) if name != nil
 
       # LOAD CHILD TASK SUB MENU (INCOMPLETE)
@@ -89,13 +89,12 @@ if ProcessARGV.init_status == true
         elsif subanswer == :MOVE
           sub_menu.move_child
         elsif subanswer == :RENAME
-          name = TTY::Prompt.new.ask(" Enter new description:\n", value: list.selected_child_name.to_s)
-          list.rename_child_task(name)
+          name = sub_menu.rename_child
+          list.rename_child_task(name) if name != nil
         elsif subanswer == :COMPLETE
           list.complete_child_task
           list.complete_task if list.check_for_complete_parent
         end
-        list.deselect_child_task
         list.write_tasks
 
       # LOAD CHILD TASK SUB MENU (COMPLETE)
@@ -110,7 +109,6 @@ if ProcessARGV.init_status == true
         end
         list.write_tasks
       end
-      list.deselect_child_task
       list.write_tasks
 
     # TASK: LOAD MASTER TASK MENU (NOT PARENT)
@@ -124,13 +122,12 @@ if ProcessARGV.init_status == true
       elsif subanswer == :MOVE
         menu.move
       elsif subanswer == :RENAME
-        name = TTY::Prompt.new.ask(" Enter new description:\n",
-                                   value: (list.tasks[list.selected_task]['description']).to_s)
+        name = sub_menu.rename_task
         list.rename_task(name) if name != nil
       elsif subanswer == :COMPLETE
         list.complete_task
       elsif subanswer == :ADD
-        name = TTY::Prompt.new.ask(" Enter a description:\n")
+        name = sub_menu.name_task
         list.add_child_task(name) if name != nil
       end
       list.write_tasks

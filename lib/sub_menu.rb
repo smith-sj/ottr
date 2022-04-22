@@ -135,4 +135,17 @@ class SubMenu < Menu
     end
     @list.move_child_task(move_from, move_to)
   end
+
+  def name_task
+    TTY::Prompt.new.ask(" Enter new description:\n")
+  end
+
+  def rename_task
+    TTY::Prompt.new.ask(" Enter new description:\n", value: @list.tasks[@list.selected_task]['description'])
+  end
+
+  def rename_child
+    TTY::Prompt.new.ask(" Enter new description:\n", value: @list.selected_child_name)
+  end
+
 end
