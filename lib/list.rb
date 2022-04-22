@@ -151,6 +151,7 @@ class List
                                                 'is_selected_child?' => false
                                               })
     @tasks[selected_task]['is_parent?'] = true
+    @tasks[selected_task]['is_complete?'] = false
   end
 
   def delete_task(target)

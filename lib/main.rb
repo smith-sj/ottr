@@ -43,7 +43,6 @@ if ProcessARGV.init_status == true
                                    value: (list.tasks[list.selected_task]['description']).to_s)
         list.rename_task(name)
       elsif subanswer == :ADD
-        list.reopen_task
         name = name = TTY::Prompt.new.ask(" Enter new description:\n")
         list.add_child_task(name)
       elsif subanswer.instance_of?(Integer)
@@ -58,8 +57,9 @@ if ProcessARGV.init_status == true
         end
         list.write_tasks
       end
+      list.write_tasks
 
-
+      
     # TASK: LOAD TASK MENU (PARENT)
     elsif answer.instance_of?(Integer) && list.tasks[list.id_to_index(answer)]['is_parent?'] == true
       list.select_task(answer)

@@ -1,5 +1,6 @@
 require 'tty-progressbar'
 require 'pastel'
+require_relative 'colors'
 
 class Progress
 
@@ -12,7 +13,7 @@ class Progress
             total: list.count_tasks, 
             width: 10, 
             complete: green,
-            incomplete: red)
+            clear: true)
         bar.advance(list.count_complete_tasks)
     end
 end

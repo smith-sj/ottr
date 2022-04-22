@@ -6,27 +6,27 @@ require_relative 'menu'
 class SubMenu < Menu
   def initialize
     @DEFAULTS = [
-      { '  Complete'.colorize(:cyan) => :COMPLETE },
-      { '  Move'.colorize(:cyan) => :MOVE },
-      { '  Rename'.colorize(:cyan) => :RENAME },
-      { '  Add Task'.colorize(:cyan) => :ADD },
-      { '  Delete'.colorize(:cyan) => :DELETE }
+      { '  Complete'.colorize(Colors.MENU_COLOR) => :COMPLETE },
+      { '  Move'.colorize(Colors.MENU_COLOR) => :MOVE },
+      { '  Rename'.colorize(Colors.MENU_COLOR) => :RENAME },
+      { '  Add Task'.colorize(Colors.MENU_COLOR) => :ADD },
+      { '  Delete'.colorize(Colors.MENU_COLOR) => :DELETE }
     ]
     @COMP_DEFAULTS = [
-      { '  Re-open'.colorize(:cyan) => :REOPEN },
-      { '  Delete'.colorize(:cyan) => :DELETE }
+      { '  Re-open'.colorize(Colors.MENU_COLOR) => :REOPEN },
+      { '  Delete'.colorize(Colors.MENU_COLOR) => :DELETE }
     ]
     @PARENT_DEFAULTS = [
-      { '  Move'.colorize(:cyan) => :MOVE },
-      { '  Rename'.colorize(:cyan) => :RENAME },
-      { '  Add Task'.colorize(:cyan) => :ADD },
-      { '  Delete'.colorize(:cyan) => :DELETE }
+      { '  Move'.colorize(Colors.MENU_COLOR) => :MOVE },
+      { '  Rename'.colorize(Colors.MENU_COLOR) => :RENAME },
+      { '  Add Task'.colorize(Colors.MENU_COLOR) => :ADD },
+      { '  Delete'.colorize(Colors.MENU_COLOR) => :DELETE }
     ]
     @CHILD_DEFAULTS = [
-      { '  Complete'.colorize(:cyan) => :COMPLETE },
-      { '  Move'.colorize(:cyan) => :MOVE },
-      { '  Rename'.colorize(:cyan) => :RENAME },
-      { '  Delete'.colorize(:cyan) => :DELETE }
+      { '  Complete'.colorize(Colors.MENU_COLOR) => :COMPLETE },
+      { '  Move'.colorize(Colors.MENU_COLOR) => :MOVE },
+      { '  Rename'.colorize(Colors.MENU_COLOR) => :RENAME },
+      { '  Delete'.colorize(Colors.MENU_COLOR) => :DELETE }
     ]
     @DISABLED_DEFAULTS = [
       { name: '  Complete'.colorize(:light_black), value: :COMPLETE, disabled: '' },
@@ -69,7 +69,7 @@ class SubMenu < Menu
   def construct(list, child)
     system('cls') || system('clear')
     Progress.new(list)
-    TTY::Prompt.new.select(''.bold, symbols: { marker: '•', cross: ' ' }, active_color: :cyan) do |menu|
+    TTY::Prompt.new.select("OTTR LIST".bold, symbols: { marker: '•', cross: ' ' }, active_color: :cyan) do |menu|
       menu.default child == true ? list.selected_task + list.selected_child_task + 2 : list.selected_task + list.selected_child_task + 1 
       menu.per_page 20
       menu.help ''
@@ -110,14 +110,15 @@ class SubMenu < Menu
 
   def move_child(list)
     system('cls') || system('clear')
+    Progress.new(list)
     child_options = (list.list_child_mover << @DISABLED_DEFAULTS).flatten
     move_options = list.list_all_greyed
     move_options.insert(list.selected_task + 1, child_options).flatten!
     move_from = list.selected_child_task
-    move_to = TTY::Prompt.new.select('OTTR LIST'.bold, active_color: :cyan,
+    move_to = TTY::Prompt.new.select("OTTR LIST".bold, active_color: :cyan,
                                                        symbols: { marker: '•', cross: ' ' }) do |menu|
       menu.per_page 20
-      menu.help 'Select a new position for task (↑/↓)'
+      menu.help "Select a new position for task (↑/↓)"
       menu.default list.selected_task + move_from + 2
       menu.choices move_options
     end
