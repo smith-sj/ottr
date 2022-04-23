@@ -169,6 +169,10 @@ class List
      @tasks[selected_task]['is_parent?'] = false if @tasks[selected_task]['child_tasks'].length < 1
   end
 
+  def wipe_tasks
+    @tasks = []
+  end
+
   def id_to_index(id)
     index = 0
     tasks.each_with_index { |t, i| index = i if t['id'] == id}

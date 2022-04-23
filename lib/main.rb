@@ -6,10 +6,10 @@ require_relative 'menu'
 require_relative 'process_argv'
 require_relative 'colors'
 
-if ARGV[0] == 'init'
-  ProcessARGV.initialize_ottr
-  return
-end
+include ProcessARGV
+
+return if !ProcessARGV.argv_parser(ARGV)
+
 
 if ProcessARGV.init_status == true
   
@@ -46,7 +46,7 @@ if ProcessARGV.init_status == true
     # MAIN MENU: User selected QUIT
     elsif answer == :QUIT
       system('cls') || system('clear')
-      return
+      break
 
     # MAIN MENU: User selected a task that is a PARENT and is COMPLETE
     elsif list.tasks[list.id_to_index(answer)]['is_parent?'] && list.tasks[list.id_to_index(answer)]['is_complete?']
@@ -157,3 +157,4 @@ if ProcessARGV.init_status == true
 else
   puts 'OTTR not initialized.'
 end
+

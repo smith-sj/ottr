@@ -2,6 +2,7 @@ require 'tty-prompt'
 require 'colorize'
 require_relative 'list'
 require_relative 'menu'
+require_relative 'colors'
 
 class SubMenu < Menu
   def initialize(list)
@@ -97,6 +98,29 @@ class SubMenu < Menu
       active_color: :cyan
     )
       @list.delete_task
+    end
+  end
+
+
+  # CONSTRUCTS A MENU FOR WIPING ALL TASKS
+
+  def wipe
+    system('cls') || system('clear')
+    if TTY::Prompt.new.select(
+      "This will completely wipe your list. Are your sure?",
+      { 'Yes' => true, 'No' => false },
+      help: '',
+      symbols: { marker: '•', cross: ' ' },
+      active_color: :cyan
+    ) &&
+    TTY::Prompt.new.select(
+      "There are no recovery methods... are you definitely sure?",
+      { 'Yes' => true, 'No' => false },
+      help: '',
+      symbols: { marker: '•', cross: ' ' },
+      active_color: :cyan
+    )
+      @list.wipe_tasks
     end
   end
 
