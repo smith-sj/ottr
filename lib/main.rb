@@ -19,102 +19,120 @@ if ProcessARGV.init_status == true
   list.load_tasks
 
   menu = Menu.new(list)
+  sub_menu = SubMenu.new(list)
+  # Deselect and save incase previous session was aborted
   list.deselect_all_tasks
   list.write_tasks
 
+  # STARTS THE MAIN MENU LOOP
   while true
-
+    # Save changes from previous loop
+    list.write_tasks
+    # Re-load saved list and show main menu
     list.load_tasks
     menu.populate_options
     answer = menu.construct
+    # Previous selection cleared after menu load
+    # so cursor in same position.
     list.deselect_all_tasks
 
-    # TASK: LOAD TASK MENU (PARENT, COMPLETE)
-    if answer.instance_of?(Integer) && list.tasks[list.id_to_index(answer)]['is_parent?'] && list.tasks[list.id_to_index(answer)]['is_complete?']
-      list.select_task(answer)
-      sub_menu = SubMenu.new(list)
-      sub_menu.populate_parent_options
-      subanswer = sub_menu.construct(false)
-      list.select_child_task(answer, subanswer)
-      if subanswer == :DELETE
-        sub_menu.delete
-      elsif subanswer == :MOVE
-        menu.move
-      elsif subanswer == :RENAME
-        name = sub_menu.rename_task
-        list.rename_task(name) if name != nil
-      elsif subanswer == :ADD
-        name = sub_menu.name_task
-        list.add_child_task(name) if name != nil
-      elsif subanswer.instance_of?(Integer)
-        sub_menu = SubMenu.new(list)
-        sub_menu.populate_child_comp_options
-        childanswer = sub_menu.construct(true)
-        if childanswer == :DELETE
-          sub_menu.delete_child_task
-        elsif childanswer == :REOPEN
-          list.reopen_child_task
-          list.reopen_task
-        end
-        list.write_tasks
-      end
+    # MAIN MENU: User selected ADD
+    if answer == :ADD
+      name = SubMenu.new(list).name_task
+      list.add_task(name) if name != nil
       list.write_tasks
 
-    # TASK: LOAD TASK MENU (PARENT)
-    elsif answer.instance_of?(Integer) && list.tasks[list.id_to_index(answer)]['is_parent?']
-      list.select_task(answer)
-      sub_menu = SubMenu.new(list)
-      sub_menu.populate_parent_options
-      subanswer = sub_menu.construct(false)
-      list.select_child_task(answer, subanswer)
-      if subanswer == :DELETE
-        sub_menu.delete(list)
-      elsif subanswer == :MOVE
-        menu.move
-      elsif subanswer == :RENAME
-        name = sub_menu.rename_task
-        list.rename_task(name) if name != nil
-      elsif subanswer == :ADD
-        name = sub_menu.name_task
-        list.add_child_task(name) if name != nil
+    # MAIN MENU: User selected QUIT
+    elsif answer == :QUIT
+      system('cls') || system('clear')
+      return
 
-      # LOAD CHILD TASK SUB MENU (INCOMPLETE)
-      elsif subanswer.instance_of?(Integer) && !list.is_child_complete?
+    # MAIN MENU: User selected a task that is a PARENT and is COMPLETE
+    elsif answer.instance_of?(Integer) && list.tasks[list.id_to_index(answer)]['is_parent?'] && list.tasks[list.id_to_index(answer)]['is_complete?']
         list.select_task(answer)
-        sub_menu = SubMenu.new(list)
-        sub_menu.populate_child_options
-        subanswer = sub_menu.construct(true)
+        # sub_menu = SubMenu.new(list)
+        sub_menu.populate_parent_options
+        subanswer = sub_menu.construct(false)
+        list.select_child_task(answer, subanswer)
         if subanswer == :DELETE
-          sub_menu.delete_child_task
+          sub_menu.delete
         elsif subanswer == :MOVE
-          sub_menu.move_child
+          menu.move
         elsif subanswer == :RENAME
-          name = sub_menu.rename_child
-          list.rename_child_task(name) if name != nil
-        elsif subanswer == :COMPLETE
-          list.complete_child_task
-          list.complete_task if list.check_for_complete_parent
+          name = sub_menu.rename_task
+          list.rename_task(name) if name != nil
+        elsif subanswer == :ADD
+          name = sub_menu.name_task
+          list.add_child_task(name) if name != nil
+
+        # CHILD MENU: User selected CHILD task that is COMPLETE
+        elsif subanswer.instance_of?(Integer)
+          # sub_menu = SubMenu.new(list)
+          sub_menu.populate_child_comp_options
+          childanswer = sub_menu.construct(true)
+          if childanswer == :DELETE
+            sub_menu.delete_child_task
+          elsif childanswer == :REOPEN
+            list.reopen_child_task
+            list.reopen_task
+          end
         end
         list.write_tasks
 
-      # LOAD CHILD TASK SUB MENU (COMPLETE)
-      elsif subanswer.instance_of?(Integer) && list.is_child_complete?
-        sub_menu = SubMenu.new(list)
-        sub_menu.populate_child_comp_options
-        subanswer = sub_menu.construct(true)
+    # MAIN MENU: User selected a task that is a PARENT and is INCOMPLETE
+    elsif answer.instance_of?(Integer) && list.tasks[list.id_to_index(answer)]['is_parent?']
+        list.select_task(answer)
+        # sub_menu = SubMenu.new(list)
+        sub_menu.populate_parent_options
+        subanswer = sub_menu.construct(false)
+        list.select_child_task(answer, subanswer)
         if subanswer == :DELETE
-          sub_menu.delete_child_task
-        elsif subanswer == :REOPEN
-          list.reopen_child_task
+          sub_menu.delete(list)
+        elsif subanswer == :MOVE
+          menu.move
+        elsif subanswer == :RENAME
+          name = sub_menu.rename_task
+          list.rename_task(name) if name != nil
+        elsif subanswer == :ADD
+          name = sub_menu.name_task
+          list.add_child_task(name) if name != nil
+
+        # CHILD MENU: User selected a CHILD task that is INCOMPLETE
+        elsif subanswer.instance_of?(Integer) && !list.is_child_complete?
+          list.select_task(answer)
+          # sub_menu = SubMenu.new(list)
+          sub_menu.populate_child_options
+          subanswer = sub_menu.construct(true)
+          if subanswer == :DELETE
+            sub_menu.delete_child_task
+          elsif subanswer == :MOVE
+            sub_menu.move_child
+          elsif subanswer == :RENAME
+            name = sub_menu.rename_child
+            list.rename_child_task(name) if name != nil
+          elsif subanswer == :COMPLETE
+            list.complete_child_task
+            list.complete_task if list.check_for_complete_parent
+          end
+          list.write_tasks
+
+        # CHILD MENU: User selected a CHILD task that is COMPLETE
+        elsif subanswer.instance_of?(Integer) && list.is_child_complete?
+          # sub_menu = SubMenu.new(list)
+          sub_menu.populate_child_comp_options
+          subanswer = sub_menu.construct(true)
+          if subanswer == :DELETE
+            sub_menu.delete_child_task
+          elsif subanswer == :REOPEN
+            list.reopen_child_task
+          end
         end
         list.write_tasks
-      end
-      list.write_tasks
 
-    # TASK: LOAD MASTER TASK MENU (NOT PARENT)
+    # MAIN MENU: User selected a task this is NOT A PARENT and INCOMPLETE
     elsif answer.instance_of?(Integer) && !list.is_complete?(answer)
       list.select_task(answer)
-      sub_menu = SubMenu.new(list)
+      # sub_menu = SubMenu.new(list)
       sub_menu.populate_options
       subanswer = sub_menu.construct(false)
       if subanswer == :DELETE
@@ -132,10 +150,11 @@ if ProcessARGV.init_status == true
       end
       list.write_tasks
 
-    # TASK: LOAD MASTER TASK MENU (COMPLETE)
+
+    # MAIN MENU: User selected a task this is NOT A PARENT and COMPLETE
     elsif answer.instance_of?(Integer) && list.is_complete?(answer)
       list.select_task(answer)
-      sub_menu = SubMenu.new(list)
+      # sub_menu = SubMenu.new(list)
       sub_menu.populate_comp_options
       subanswer = sub_menu.construct(false)
       if subanswer == :DELETE
@@ -145,15 +164,6 @@ if ProcessARGV.init_status == true
       end
       list.write_tasks
 
-    # ADD TASK
-    elsif answer == :ADD
-      name = TTY::Prompt.new.ask(" Enter a description:\n")
-      list.add_task(name) if name != nil
-      list.write_tasks
-
-    # QUIT
-    elsif answer == :QUIT
-      return
     end
   end
 else

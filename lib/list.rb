@@ -238,7 +238,7 @@ class List
   end
 
   def deselect_child_task
-    @tasks[selected_task]['child_tasks'].each { |t| t['is_selected?'] = false if t['is_selected']}
+    @tasks[selected_task]['child_tasks'].each { |t| t['is_selected?'] = false if t['is_selected?']}
   end
 
   def deselect_all_tasks
