@@ -209,6 +209,10 @@ class List
     i
   end
 
+  def selected_task_name
+    @tasks[selected_task]['description']
+  end
+
   def selected_child_name
     @tasks[selected_task]['child_tasks'][selected_child_task]['description']
   end

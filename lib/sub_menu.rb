@@ -88,7 +88,7 @@ class SubMenu < Menu
 
   # CONSTRUCTS A MENU FOR DELETING TASKS
 
-  def delete()
+  def delete
     system('cls') || system('clear')
     if TTY::Prompt.new.select(
       "Delete '#{@list.tasks[@list.selected_task]['description']}'?",
@@ -158,6 +158,21 @@ class SubMenu < Menu
       menu.choices move_options
     end
     @list.move_child_task(move_from, move_to)
+  end
+
+  # CONSTRUCTS A MINIMAL MENU FOR MOVING CHILD TASK
+
+  def mini_move_child
+    move_from = @list.selected_child_task
+    move_to = TTY::Prompt.new.select('', active_color: :cyan,
+                                                       symbols: { marker: '•', cross: ' ' }) do |menu|
+      menu.per_page 20
+      menu.help 'Select a new position for task (↑/↓)'
+      menu.default move_from + 1
+      menu.choices @list.list_child_mover
+    end
+    @list.move_child_task(move_from, move_to)
+    system('cls') || system('clear')
   end
 
   def name_task
