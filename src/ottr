@@ -87,7 +87,7 @@ if ProcessARGV.init_status == true
         if subanswer == :BACK
           nil
         elsif subanswer == :DELETE
-          sub_menu.delete(list)
+          sub_menu.delete
         elsif subanswer == :MOVE
           menu.move
         elsif subanswer == :RENAME
