@@ -37,3 +37,30 @@ the way it was intended to be run.
 1. create a softlink by running `sudo ln -s $PWD/ottr /usr/local/bin/` (or use the path you chose in step 3)
 
 If the link was successful you should be able to initiate ottr in any directory by `cd`ing into it and running `ottr init`. Ottr can then be used in that directory by running `ottr`.
+
+### How to use ottr
+
+The easiest way to learn how to use ottr is to jump into the UI and play around with it.
+
+To initiate ottr in any directory, simply `cd` into that directory and run `ottr init`. The ottr UI can now be accessed from that directory using the `ottr` command. We'll cover how to use the UI later, but for now lets look at what else you can do from the command line.
+
+## ottr from the command line
+
+-`ottr init` initiates ottr in the current working directory
+-`ottr add "just an example"` will add a new task called *just an example*
+-`ottr add 1 "a nested example"` will add a new child-task called *a nested example* to the task in position 1
+-`ottr log` prints a list of all tasks and child-tasks
+
+e.g. running the previous **add** commands and then running the **log** command would return:
+```
+1. just an example
+    1.1. a nested example
+```
+
+- `ottr move 3` will open a menu for moving the **3rd** task
+-`ottr move 3 2` will open a menu for moving the **2nd** child-task of the **3rd** task
+-`ottr del 2` will delete the **2nd** task (you will be asked to confirm the deletion)
+-`ottr del 5 3` will delete the **3rd** child-task of the ***5th*** task (you will be asked to confirm the deletion)
+-`ottr name 3` will open a menu to rename the **3rd** task
+-`ottr name 2 6` will open a menu to rename the **6th** child-task of the **2nd** task
+
