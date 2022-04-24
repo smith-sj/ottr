@@ -34,6 +34,6 @@ the way it was intended to be run.
 1. if you would like to use `/usr/local/bin/` but it doesn't exist, create it using `mkdir -p /usr/local/bin`
 1. `cd` into the `ottr/src` directory containing `ottr`
 1. run `./installer.sh` to install required ruby gems
-1. create a softlink by running `ln -s $PWD/ottr /usr/local/bin/` (or use the path you chose in step 3)
+1. create a softlink by running `sudo ln -s $PWD/ottr /usr/local/bin/` (or use the path you chose in step 3)
 
 If the link was successful you should be able to initiate ottr in any directory by `cd`ing into it and running `ottr init`. Ottr can then be used in that directory by running `ottr`.
