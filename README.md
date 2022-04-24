@@ -19,8 +19,9 @@ this is okay for testing ottr out, but won't allow you to run it from other dire
 1. open terminal
 1. `cd` into the `ottr/src` directory containing `ottr`
 1. run `./installer.sh`
-1. run `./ottr init`
-1. now that ottr is initalized you can run the script using the command `ottr` from the current working directory 
+1. initialize ottr by running `./ottr init`
+
+Now that ottr is initalized you can run the script using the command `./ottr` from the current working directory 
 
 ### Installing ottr
 
