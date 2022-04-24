@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 
 require 'tty-prompt'
 require 'colorize'
