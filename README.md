@@ -18,7 +18,7 @@ this is okay for testing ottr out, but won't allow you to run it from other dire
 1. clone the ottr repo
 1. open terminal
 1. `cd` into the `src` directory containing `ottr`
-1. run `ottr init`
+1. run `./ottr init`
 1. you should see `ottr initialized`, if not, check that you are in the correct directory and that the `ottr` file's permissions are set to execute
 1. now that ottr is initalized you can run the script using the command `ottr` from the current working directory 
 
