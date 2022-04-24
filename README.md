@@ -46,10 +46,10 @@ To initiate ottr in any directory, simply `cd` into that directory and run `ottr
 
 ## ottr from the command line
 
--`ottr init` initiates ottr in the current working directory
--`ottr add "just an example"` will add a new task called *just an example*
--`ottr add 1 "a nested example"` will add a new child-task called *a nested example* to the task in position 1
--`ottr log` prints a list of all tasks and child-tasks
+* `ottr init` initiates ottr in the current working directory
+* `ottr add "just an example"` will add a new task called *just an example*
+* `ottr add 1 "a nested example"` will add a new child-task called *a nested example* to the task in position 1
+* `ottr log` prints a list of all tasks and child-tasks
 
 e.g. running the previous **add** commands and then running the **log** command would return:
 ```
@@ -57,10 +57,10 @@ e.g. running the previous **add** commands and then running the **log** command 
     1.1. a nested example
 ```
 
-- `ottr move 3` will open a menu for moving the **3rd** task
--`ottr move 3 2` will open a menu for moving the **2nd** child-task of the **3rd** task
--`ottr del 2` will delete the **2nd** task (you will be asked to confirm the deletion)
--`ottr del 5 3` will delete the **3rd** child-task of the ***5th*** task (you will be asked to confirm the deletion)
--`ottr name 3` will open a menu to rename the **3rd** task
--`ottr name 2 6` will open a menu to rename the **6th** child-task of the **2nd** task
+* `ottr move 3` will open a menu for moving the **3rd** task
+* `ottr move 3 2` will open a menu for moving the **2nd** child-task of the **3rd** task
+* `ottr del 2` will delete the **2nd** task (you will be asked to confirm the deletion)
+* `ottr del 5 3` will delete the **3rd** child-task of the ***5th*** task (you will be asked to confirm the deletion)
+* `ottr name 3` will open a menu to rename the **3rd** task
+* `ottr name 2 6` will open a menu to rename the **6th** child-task of the **2nd** task
 
