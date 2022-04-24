@@ -38,13 +38,13 @@ the way it was intended to be run.
 
 If the link was successful you should be able to initiate ottr in any directory by `cd`ing into it and running `ottr init`. Ottr can then be used in that directory by running `ottr`.
 
-### How to use ottr
+## How to use ottr
 
 The easiest way to learn how to use ottr is to jump into the UI and play around with it.
 
 To initiate ottr in any directory, simply `cd` into that directory and run `ottr init`. The ottr UI can now be accessed from that directory using the `ottr` command. We'll cover how to use the UI later, but for now lets look at what else you can do from the command line.
 
-## ottr from the command line
+### ottr from the command line
 
 * `ottr init` initiates ottr in the current working directory
 * `ottr add "just an example"` will add a new task called *just an example*
