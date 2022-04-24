@@ -1,3 +1,4 @@
+
 require 'tty-prompt'
 require 'colorize'
 require_relative 'sub_menu'
@@ -9,7 +10,6 @@ require_relative 'colors'
 include ProcessARGV
 
 return if !ProcessARGV.argv_parser(ARGV)
-
 
 if ProcessARGV.init_status == true
   

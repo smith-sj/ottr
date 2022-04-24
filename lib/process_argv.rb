@@ -20,14 +20,37 @@ module ProcessARGV
   end
 
   def task_exist(list, task)
-    (1..list.tasks.length).include?(task.to_i)
+    (0..list.tasks.length - 1).include?(task.to_i - 1)
   end
 
   def child_exist(list, task, child)
-    (1..list.tasks[task.to_i]['child_tasks'].length).include?(child.to_i)
+    (0..list.tasks[task.to_i - 1]['child_tasks'].length - 1).include?(child.to_i - 1)
   end
 
+  def initialize_ottr
+    if @@init_status == true
+      puts 'already initialized'
+    else
+      List.new.write_tasks
+      puts 'ottr initialized'
+    end
+  end
+
+  def self.init_status
+    @@init_status
+  end
+
+
   def argv_parser(argv)
+  
+    if argv[0] == 'init'
+      initialize_ottr()
+      return false
+    elsif !@@init_status
+      puts "ottr not initialized"
+      return false
+    end
+
     start = false
     list = List.new
     list.load_tasks
@@ -39,9 +62,7 @@ module ProcessARGV
       start = true
     
     when 1
-      if argv[0] == 'init'
-        initialize_ottr()
-      elsif argv[0] == 'log'
+      if argv[0] == 'log'
         list.tasks.each_with_index do |t, i|
           if t["is_complete?"] 
             puts "#{i + 1}. #{t['description']}".colorize(:light_black)
@@ -203,7 +224,7 @@ module ProcessARGV
       else
         puts HELP_ERROR
       end
-      
+
     else
       puts HELP_ERROR 
     end
@@ -211,19 +232,6 @@ module ProcessARGV
     list.deselect_all_tasks
     list.write_tasks
     start
-  end
-
-  def initialize_ottr
-    if @@init_status == true
-      puts 'already initialized'
-    else
-      List.new.write_tasks
-      puts 'ottr initialized'
-    end
-  end
-
-  def self.init_status
-    @@init_status
   end
 
 end
