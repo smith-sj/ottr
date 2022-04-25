@@ -164,7 +164,7 @@ Thanks to Murphy's code analyrzer and formatter, [***Rubocop***](https://github.
 
 ## Features
 
-### TASKS
+### Tasks
 
 The entire ottr application revolves around creating and organizing a list of tasks. The tasks themselves must have a collection of actions that can be performed on them. 
 
@@ -179,25 +179,25 @@ and so on...
 
 Another important aspect to note is that each task should have a ***unique ID***, that can be referenced when performing actions on them. This will mean we don't have to worry about errors relating to task names when performing methods on tasks. It also means that there is less validation required for task names, as long as it contains a character of some form and even if it shares the same name as another task, it will be valid.
 
-### CHILD-TASKS
+### Child-tasks
 
 A child-task is a task nested inside of another task. This feature will allow users to break down bigger tasks into smaller steps. Like regular tasks, child tasks will have complete or in-complete states, however they will not be able to nest other tasks, and so do not have a parental state.
 
 Child-tasks should have most of the same functionality as regular tasks depending on their state (*Complete, Rename, Move, Delete*).
 
-### MENU
+### Menu
 
 The main menu will contain a list of the **top level tasks** as well as the option to **add a new task** or **quit the program**. The tasks should be visibly different to the default options, as to avoid confusion, and it should be clear where the pointer is positioned.
 
-### SUB-MENUS
+### Sub-menus
 
 Sub-menus will pop up when a task or child-task is selected. They should show all of the child-tasks and default options associated with that task or child-task, but they should also display a greyed out view of the rest of the list, so that the user still has context as to where the sub-menu is popping up.
 
-### PROGRESS BAR
+### Progress Bar
 
 This feature will provide a quick and easy way for the user to get an idea of how far through the project they are. The progress bar will be visible from both the main menu and sub-menu views, it will always display a visual representation of the **completed percentage** of all tasks. It should also indicate the fraction of completed tasks / total tasks.
 
-### DEFAULT OPTIONS
+### Default Options
 
 The following options are considered a main feature of the program, as they will be what gives ottr its organizational qualities. Each option may behave slightly different between states and task types, but will perform the following actions:
 
@@ -209,7 +209,7 @@ The following options are considered a main feature of the program, as they will
 - ***Delete***: Delete a task from its list
 
 
-### COMMAND LINE ARGUMENTS HANDLER
+### Command Line Arguments Handler
 
 This feature will ensure eveyrthing that can be done from the ottr UI, will be achievable through command line arguments.
 
@@ -241,11 +241,24 @@ Finally the command line handler should always print some form of feedback, to l
 
 ## Implementation Plan
 
+***Total estimated time: 32 hours***
+
 ### List Class
+
+#### **Estimated Time:** *8 hours*
+
+#### **Checklist:**
+
+- brainstorm the design of the class *(1 hr)*
+- Make the class and the initalize method *(1 hr)*
+- Write each method for the class *(3 hrs)*
+- write tests for the class *(3 hrs)*
+
+#### **Outline:**
 
 In order to implement the tasks and child-tasks features, I'v decided to create a list class. My inital thoughts were to create classes for both types of tasks. However, when considering the overall architecture of my program, and the classes needed in order to implement the other features, I decided to instead create a single ***List class***. ***List instances*** can be created, that contain an ***instance variable*** called ***@tasks*** which initiates as an empty array. This ***@tasks array*** will be store tasks as ***hashes***, and each hash may contain another array of child-tasks, also represented as hashes.
 
-*Using the previous example, the **@tasks** array may look something like this:
+*Using the previous example, the **@tasks** array may look something like this:*
 
 ```
 [
@@ -295,7 +308,22 @@ In order to implement the tasks and child-tasks features, I'v decided to create 
 
 Using this structure the ***list instance*** will have full knowledge of all tasks, child-tasks as well as their states and any other data relating to them, such as their unique ID.
 
+The list class will also contain all of the methods needed for altering the list. This shouldn't be too hard because a list can be accessed like this `@tasks[i]` where `i` is the list's position. From there it is just a matter of writing methods for editing the list, most of which will just be methods of the **Array class** shuch as `@tasks.delete_at(selected_task)`. Renaming a task might look something like this `@tasks['selected_task']['description'] = 'new description'`.
+
+Accessing child-tasks will be slightly more challenging, but as long as we know which task has been selected, as well as which of its child-tasks has been selected we can access it like this `@tasks[selected_task]['child_tasks]['selected_child']`. So renaming a child task might look something like this `@tasks[selected_task]['child_tasks]['selected_child']['description'] = 'new description'`
+
 ### JSON Handler Module
+
+#### **Estimated Time:** *3 hours*
+
+#### **Checklist:**
+
+- brainstorm the design of the module *(1 hr)*
+- Write each method for the module *(1 hr)*
+- write tests for the module *(1 hr)*
+
+#### **Outline:**
+
 
 Any changes to tasks will be made via the **List instance**, which as previously discussed, happens by updating an **instance variable** called **@tasks**. After each change to **@tasks**, the entire array can be written to a **json file** (over-writing any previous data), so if the user quits the app and loads it back up again, the **array** stored in the **json file** can be loaded back into the **@tasks** variable of the new **List instance**.
 
@@ -303,7 +331,80 @@ This loading and writing cycle will be handled by a **JSON Handler** module. It 
 
 ### Menu Class
 
+#### **Estimated Time:** *10 hours*
+
+#### **Checklist**
+
+- brainstorm the design of the class *(1 hr)*
+- learn how to use TTY prompt *(1 hr)*
+- Make the class and the initalize method *(1 hr)*
+- Write each method for the class *(4 hrs)*
+- write tests for the class *(3 hrs)*
+
+#### **Outline:**
+
+Now that a strategy for storing the tasks has been developed. A process for displaying the list, and interacting with it needs to be developed.
+
+The **Menu Class** will take the **@tasks** array from the current **List instance** and populate a **menu** with the top level tasks. The **default options** will also be appended to this list of items, producing a menu that contains all of the tasks, as well as the default options for the main menu.
+
+The menu will implement using the [**TTY-prompt**](https://github.com/piotrmurach/tty-prompt) gem by [**Piotr Murach**](https://github.com/piotrmurach).
+
+The `.select()` method from ***TTY-prompt*** shows a menu populated with choices that can be fed in as an array of **strings** or **hashes**. We'll feed it an **array of hashes**, where the **key** of each hash reprsesents what will be shown in the menu and the **value** contains the value that is returned when the user makes their selection. In our case the **key** will be each task's name and the **value** will be each task's **unique id**.
+
+With the `.select()` method in mind, all we need to is take the returned value (which will always be a task id) and create a method that assigns it to a `selected_task` variable, which can be used in the **List Class** methods.
+
+The **default options** will be stored in the same menu, but the hash's **key** will contain the name of the option (e.g. `Delete`) and the **value** will contain a symbol like **:DELETE**.
+
+Now we know that if a menu returns an instance of **Integer**, then the user selected a **task**, but if the menu returns a symbol, the user selected a **default option**. If a task was selected then a sub-menu can be loaded for that task, whereas if a default option was selected, the appropriate action can be performed.
+
+Each time the ottr UI is initiated, a **Menu Instance** will be initiated. This instance contains **instance variables** with different combinations of default options that can be loaded into each manu, depending on the surrounding factors. (Sometimes we may need to load different default options). The current set of ***default options*** in use can be loaded into an ***options*** hash which will be used when constructing the menu.
+
+The ***Menu Class*** will need to contain methods for initiating the menu object, populating it with tasks + default options, and constructing the actual menu itself.
+
+
 ### Sub-Menu Class
+
+#### **Estimated Time:** *8 hours*
+
+#### **Checklist**
+
+- brainstorm the design of the class *(1 hr)*
+- Make the class and the initalize method *(1 hr)*
+- Write each method for the class *(3 hrs)*
+- write tests for the class *(3 hrs)*
+
+#### **Outline:**
+
+The ***Sub-Menu Class*** will inherit the **Menu Class**, but will also include its own unique characteristics.
+
+An instance of the sub-menu class will be loaded when the app is run, but it will be populated with different ***default options*** depending on the context in which it is called.
+
+The main difference between the **Menu** and **Sub-menu** classes, is that sub-menus will be built inside the main menu. These ***lower level*** menus can be used for displaying actions for patricular tasks, showing actions for child-tasks or for moving a task from one position to another.
+
+I could implement this so that a **new object** is created for each **sub-menu**, although I think it will be better to mirror what the **Menu class** does, and have a single **Sub-menu instance** that can load in different **default options** for different scenarios. I may need to include specific methods for consturcting one-off menus, such as for moving tasks from one position to another.
+
+Much like the main menus, the sub-menu's will return **unique ID's** for tasks, and symbols for **default options**.
 
 ### Process ARGV Module
 
+#### **Estimated Time:** *11 hours*
+
+#### **Checklist**
+
+- brainstorm the design of the module *(1 hr)*
+- write the control flow logic for determing methods *(3 hrs)*
+- incorporate methods from the List class into the control flow *(3 hrs)*
+- write methods for giving user feedback and loading sub-menus *(1 hr)*
+- write tests for the module *(3 hrs)*
+
+#### **Outline:**
+
+This module will be used for handling command line arguments. As previously mentioned, all the methods that can be accessed inside the UI should also be achievable from the command line.
+
+For this to work we will simply pass the module the **ARGV** array where a control flow will decide what methods to perform based on the contents of the array.
+
+When running `ottr`, the module will check whether it has been **initialised**. If it has it will run the program, otherwise it will let the user know that `'ottr has not been initialised'`
+
+The module will need to include a method for initialising ottr. When the user runs `ottr init`, it should check whether a hidden file called `.ottr.json` exists in the current working directory. If it does it will return `'ottr already initialised'` but if it doesn't, it will call on the **JSON Handler** module to create the json file.
+
+Because the ***List Class*** contains all of the methods we need to interact with the array inside **json file**, it should be as easy as intitiating a new instance of the **List Class** and using its methods to perform the various actions. A sub-menu may also be needed to make confirmations and name changes etc.
