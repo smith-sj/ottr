@@ -1,6 +1,7 @@
 require_relative 'list'
 require_relative 'sub_menu'
 require 'colorize'
+require 'tty-box'
 
 module ProcessARGV
   @@init_status = File.exist?('./.ottr.json')
@@ -36,6 +37,19 @@ module ProcessARGV
     end
   end
 
+  def print_help
+    # appends file name onto path/to/script
+    # necessary because file not in working dir
+    help = File.open(File.join(File.dirname(__FILE__), 'help.txt'), 'r+')
+    text = help.read
+    box = TTY::Box.frame(title: { top_left: 'OTTR HELP'.colorize(Colors.PRIMARY),
+                                  bottom_right: 'v1.0'.colorize(Colors.PRIMARY) }) do
+      text.to_s
+    end
+    puts box
+    help.close
+  end
+
   def self.init_status
     @@init_status
   end
@@ -43,6 +57,9 @@ module ProcessARGV
   def argv_parser(argv)
     if argv[0] == 'init'
       initialize_ottr
+      return false
+    elsif argv[0] == 'help'
+      print_help
       return false
     elsif !@@init_status
       puts 'ottr not initialized'
@@ -63,13 +80,13 @@ module ProcessARGV
       if argv[0] == 'log'
         list.tasks.each_with_index do |t, i|
           if t['is_complete?']
-            puts "#{i + 1}. #{t['description']}".colorize(:light_black)
+            puts "#{i + 1}. #{t['description']}".colorize(Colors.DISABLED)
           else
             puts "#{i + 1}. #{t['description']}"
           end
           t['child_tasks'].each_with_index do |c, ii|
             if c['is_complete?']
-              puts "#{INDENT}#{i + 1}.#{ii + 1}. #{c['description']}".colorize(:light_black)
+              puts "#{INDENT}#{i + 1}.#{ii + 1}. #{c['description']}".colorize(Colors.DISABLED)
             else
               puts "#{INDENT}#{i + 1}.#{ii + 1}. #{c['description']}"
             end
@@ -80,11 +97,7 @@ module ProcessARGV
         list.write_tasks
         feedback(nil, 'list wiped')
       elsif argv[0] == 'help'
-        # appends file name onto path/to/script
-        # necessary because file not in working dir
-        help = File.open(File.join(File.dirname(__FILE__), 'help.txt'), 'r+')
-        puts help.read
-        help.close
+        print_help
       else
         puts HELP_ERROR
       end

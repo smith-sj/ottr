@@ -78,7 +78,8 @@ class SubMenu < Menu
   def construct(has_child)
     system('cls') || system('clear')
     Progress.new(@list)
-    TTY::Prompt.new.select('OTTR LIST'.bold, symbols: { marker: '•', cross: ' ' }, active_color: :cyan) do |menu|
+    TTY::Prompt.new.select('OTTR LIST'.bold, symbols: { marker: '•', cross: ' ' },
+                                             active_color: Colors.PRIMARY) do |menu|
       menu.default has_child ? @list.selected_task + @list.selected_child_task + 2 : @list.selected_task + @list.selected_child_task + 1
       menu.per_page 20
       menu.help ''
@@ -95,7 +96,7 @@ class SubMenu < Menu
       { 'Yes' => true, 'No' => false },
       help: '',
       symbols: { marker: '•', cross: ' ' },
-      active_color: :cyan
+      active_color: Colors.PRIMARY
     )
       @list.delete_task
     end
@@ -110,14 +111,14 @@ class SubMenu < Menu
       { 'Yes' => true, 'No' => false },
       help: '',
       symbols: { marker: '•', cross: ' ' },
-      active_color: :cyan
+      active_color: Colors.PRIMARY
     ) &&
        TTY::Prompt.new.select(
          'There are no recovery methods... are you definitely sure?',
          { 'Yes' => true, 'No' => false },
          help: '',
          symbols: { marker: '•', cross: ' ' },
-         active_color: :cyan
+         active_color: Colors.PRIMARY
        )
       @list.wipe_tasks
     end
@@ -132,7 +133,7 @@ class SubMenu < Menu
       { 'Yes' => true, 'No' => false },
       help: '',
       symbols: { marker: '•', cross: ' ' },
-      active_color: :cyan
+      active_color: Colors.PRIMARY
     )
       @list.delete_child_task
       # if remaining child tasks are complete then parent is complete
@@ -149,7 +150,7 @@ class SubMenu < Menu
     move_options = @list.list_all_greyed
     move_options.insert(@list.selected_task + 1, child_options).flatten!
     move_from = @list.selected_child_task
-    move_to = TTY::Prompt.new.select('OTTR LIST'.bold, active_color: :cyan,
+    move_to = TTY::Prompt.new.select('OTTR LIST'.bold, active_color: Colors.PRIMARY,
                                                        symbols: { marker: '•', cross: ' ' }) do |menu|
       menu.per_page 20
       menu.help 'Select a new position for task (↑/↓)'
@@ -163,7 +164,7 @@ class SubMenu < Menu
 
   def mini_move_child
     move_from = @list.selected_child_task
-    move_to = TTY::Prompt.new.select('', active_color: :cyan,
+    move_to = TTY::Prompt.new.select('', active_color: Colors.PRIMARY,
                                          symbols: { marker: '•', cross: ' ' }) do |menu|
       menu.per_page 20
       menu.help 'Select a new position for task (↑/↓)'

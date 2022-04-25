@@ -1,5 +1,6 @@
 require 'colorize'
 require_relative 'json_handler'
+require_relative 'colors'
 include JSONHandler
 
 class List
@@ -60,7 +61,7 @@ class List
   def list_task_mover
     @tasks.each_with_index.map do |task, index|
       if task['is_selected?']
-        { task['description'].colorize(:cyan).blink => index }
+        { task['description'].colorize(Colors.PRIMARY).blink => index }
       else
         { task['description'] => index }
       end
@@ -70,7 +71,7 @@ class List
   def list_child_mover
     @tasks[selected_task]['child_tasks'].each_with_index.map do |task, index|
       if task['is_selected_child?']
-        { task['description'].colorize(:cyan).blink => index }
+        { task['description'].colorize(Colors.PRIMARY).blink => index }
       else
         { task['description'] => index }
       end
