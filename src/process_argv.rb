@@ -95,7 +95,6 @@ module ProcessARGV
       elsif argv[0] == 'wipe'
         sub_menu.wipe
         list.write_tasks
-        feedback(nil, 'list wiped')
       elsif argv[0] == 'help'
         print_help
       else

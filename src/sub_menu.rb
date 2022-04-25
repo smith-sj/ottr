@@ -121,6 +121,7 @@ class SubMenu < Menu
          active_color: Colors.PRIMARY
        )
       @list.wipe_tasks
+      puts "list wiped"
     end
   end
 
