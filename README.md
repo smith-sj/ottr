@@ -1,5 +1,7 @@
 # ottr
 
+ottr repo: https://github.com/smith-sj/ottr
+
 ## Overview
 Organisational Task Tracker (ottr) is a repository-specifc terminal app for keeping track of tasks associated with a specific project. 
 Once initialized inside of a repo, users can add, remove, re-organize, and nest tasks, either striaght from the command line or by launching
@@ -121,7 +123,7 @@ The parent-task's options will still be reachable below the child-tasks.
 
 Start ticking off some of some of the tasks by selecting the `Complete` option.
 
-Once all of a tasks children tasks have been completed, it will become complete.
+Once all of a task's child-tasks have been completed, it will become complete.
 
 Complete tasks are displayed in dark grey.
 
@@ -144,4 +146,63 @@ Regular tasks, parent-tasks and child-tasks can all be renamed and deleted.
 Both the `rename` and `delete` options, will bring up their respective prompts.
 
 ![new_list](./readme_images/split-screen.png)
+
+A more mature list may look something like this:
+
+![new_list](./readme_images/full-list.png)
+
+
+## Style Guide
+
+Ottr was created with ***The Ruby Style Guide*** by *Alex J. Murphy* in mind. The style guide contains best practices to help Ruby programmers write code that can be easily interpreted and maintained by other programmers. It was based off suggestions and feed back from the Ruby community as well as recources such as [***Programming Ruby***](https://pragprog.com/titles/ruby4/programming-ruby-1-9-2-0-4th-edition/) and [***The Ruby Programming Language***](https://www.amazon.com/Ruby-Programming-Language-David-Flanagan/dp/0596516177)
+
+*source: https://github.com/rubocop/ruby-style-guide*
+
+Thanks to Murphy's code analyrzer and formatter, [***Rubocop***](https://github.com/rubocop/rubocop); following this style guide was easy. The formatter picked up most of my style violations and properly corrected them.
+
+*source: https://github.com/rubocop/rubocop*
+
+## Features
+
+### TASKS
+
+The entire ottr application revolves around creating and organizing a list of tasks. The tasks themselves must have a collection of actions that can be performed on them. 
+
+Tasks will need to have different states; whether or not a task has been completed will decided whether it is in a ***complete*** or ***incomplete*** state; whether or not the task contains child-tasks will decide whether the task is in a ***parental*** or ***non-parental*** state. Depending on a task's state, it will have a different set of actions, or ***default options*** that can be performed on it.
+
+For example, here is a list of different states a task may be in, folowed by a list of default options that the task will have:
+
+- **Non-parental, incomplete task**: *Complete, Rename, Move, Add Child-Task, Delete*
+- **Parental, complete task**: *Rename, Move, Add Child-Task, Delete*
+
+and so on...
+
+### CHILD-TASKS
+
+A child-task is a task nested inside of another task. This feature will allow users to break down bigger tasks into smaller steps. Like regular tasks, child tasks will have complete or in-complete states, however they will not be able to nest other tasks, and so do not have a parental state.
+
+Child-tasks should have most of the same functionality as regular tasks depending on their state (*Complete, Rename, Move, Delete*).
+
+### MENU
+
+The main menu will contain a list of the **top level tasks** as well as the option to **add a new task** or **quit the program**. The tasks should be visibly different to the default options, as to avoid confusion, and it should be clear where the pointer is positioned.
+
+### SUB-MENUS
+
+Sub-menus will pop up when a task or child-task is selected. They should show all of the child-tasks and default options associated with that task or child-task, but they should also display a greyed out view of the rest of the list, so that the user still has context as to where the sub-menu is popping up.
+
+### PROGRESS BAR
+
+This feature should be a quick and easy way for the user to get an idea of how far through the project they are. The progress bar will be visible from both the main menu and sub-menu views, it will always display a visual representation of the **completed percentage** of all tasks. It should also indicate the fraction of completed tasks / total tasks.
+
+### DEFAULT OPTIONS
+
+- ***Add Task***
+- ***Complete Task***
+- ***Rename***
+- ***Move***
+- ***Delete***
+
+
+### COMMAND LINE ARGUMENTS HANDLER
 
