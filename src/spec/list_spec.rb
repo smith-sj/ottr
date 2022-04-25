@@ -1,4 +1,4 @@
-require_relative '../lib/list'
+require_relative '../list'
 
 describe List do
   context "When a list object's tasks contain 3 items:" do
@@ -8,60 +8,55 @@ describe List do
                                               'description' => 'Do the laundry',
                                               'is_complete?' => false,
                                               'is_parent?' => false,
-                                              'is_selected?' => false },
+                                              'is_selected?' => false,
+                                              'child_tasks' => []},
                                             {
                                               'id' => 8,
                                               'description' => 'Go for walk',
                                               'is_complete?' => false,
                                               'is_parent?' => false,
-                                              'is_selected?' => false
+                                              'is_selected?' => false,
+                                              'child_tasks' => []
                                             },
                                             {
                                               'id' => 4,
                                               'description' => 'Wash the car',
                                               'is_complete?' => false,
                                               'is_parent?' => false,
-                                              'is_selected?' => false
+                                              'is_selected?' => false,
+                                              'child_tasks' => []
                                             }])
     end
 
-    it 'it should return array of hashes containing {task_description => id}' do
+
+    it 'should return array of hashes containing {task_description => id}' do
       expect(@list.list_task_descriptions).to eq([
-                                                   { 'Do the laundry' => 6 },
-                                                   { 'Go for walk' => 8 },
-                                                   { 'Wash the car' => 4 }
+                                                  {:name=>"Do the laundry", :value=>6},
+                                                  {:name=>"Go for walk", :value=>8},
+                                                  {:name=>"Wash the car", :value=>4}
                                                  ])
     end
 
-    it 'it should return array of task ids' do
+    it 'should return array of task ids' do
       expect(@list.task_ids).to eq([6, 8, 4])
     end
 
-    it 'it should return a unique id that is 1 larger than the largest id' do
+    it 'should return a unique id that is 1 larger than the largest id' do
       expect(@list.unique_id).to eq(9)
     end
 
-    it 'it should take two ids and swap their position in task list' do
-      @list.move_task(4, 8)
-      expect(@list.task_ids).to eq([6, 4, 8])
-    end
-
-    it 'it should take a description and add a new task to @tasks array' do
+    it 'should take a description and add a new task to @tasks array' do
       @list.add_task('Mow the lawn')
       expect(@list.list_task_descriptions).to eq([
-                                                   { 'Do the laundry' => 6 },
-                                                   { 'Go for walk' => 8 },
-                                                   { 'Wash the car' => 4 },
-                                                   { 'Mow the lawn' => 9 }
+                                                   {:name=>'Do the laundry',:value=>6},
+                                                   {:name=>'Go for walk',:value=>8},
+                                                   {:name=>'Wash the car',:value=> 4 },
+                                                   {:name=>'Mow the lawn',:value=> 9 }
                                                  ])
     end
 
-    it 'it should take an id and delete task with matching id' do
-      @list.delete_task(6)
-      expect(@list.task_ids).to eq([8, 4])
-    end
 
-    it "it should take an id and return the associated task's index" do
+    it "should take an id and return the associated task's index" do
       expect(@list.id_to_index(6)).to eq(0)
       expect(@list.id_to_index(8)).to eq(1)
       expect(@list.id_to_index(4)).to eq(2)
