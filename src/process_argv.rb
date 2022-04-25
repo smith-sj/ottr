@@ -83,7 +83,7 @@ module ProcessARGV
         # appends file name onto path/to/script
         # necessary because file not in working dir
         help = File.open(File.join(File.dirname(__FILE__), 'help.txt'), 'r+')
-        puts help.read()
+        puts help.read
         help.close
       else
         puts HELP_ERROR

@@ -9,7 +9,7 @@ describe List do
                                               'is_complete?' => false,
                                               'is_parent?' => false,
                                               'is_selected?' => false,
-                                              'child_tasks' => []},
+                                              'child_tasks' => [] },
                                             {
                                               'id' => 8,
                                               'description' => 'Go for walk',
@@ -28,12 +28,11 @@ describe List do
                                             }])
     end
 
-
     it 'should return array of hashes containing {task_description => id}' do
       expect(@list.list_task_descriptions).to eq([
-                                                  {:name=>"Do the laundry", :value=>6},
-                                                  {:name=>"Go for walk", :value=>8},
-                                                  {:name=>"Wash the car", :value=>4}
+                                                   { name: 'Do the laundry', value: 6 },
+                                                   { name: 'Go for walk', value: 8 },
+                                                   { name: 'Wash the car', value: 4 }
                                                  ])
     end
 
@@ -48,13 +47,12 @@ describe List do
     it 'should take a description and add a new task to @tasks array' do
       @list.add_task('Mow the lawn')
       expect(@list.list_task_descriptions).to eq([
-                                                   {:name=>'Do the laundry',:value=>6},
-                                                   {:name=>'Go for walk',:value=>8},
-                                                   {:name=>'Wash the car',:value=> 4 },
-                                                   {:name=>'Mow the lawn',:value=> 9 }
+                                                   { name: 'Do the laundry', value: 6 },
+                                                   { name: 'Go for walk', value: 8 },
+                                                   { name: 'Wash the car', value: 4 },
+                                                   { name: 'Mow the lawn', value: 9 }
                                                  ])
     end
-
 
     it "should take an id and return the associated task's index" do
       expect(@list.id_to_index(6)).to eq(0)
