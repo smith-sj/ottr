@@ -4,12 +4,12 @@ ottr repo: https://github.com/smith-sj/ottr
 
 ## Table of Contents
 
-### ottr Documentation
+### Ottr Documentation
 - [Overview](#overview)
 - [Set-up & Installation](#setup)
 - [How to Use Ottr](#howto)
 
-### Assignment-specific documentation
+### Assignment-specific Documentation
 - [Style Guide](#styleguide)
 - [Features](#features)
 - [Implementaion Plan](#plan)
@@ -184,6 +184,14 @@ Thanks to Murphy's code analyzer and formatter, [***Rubocop***](https://github.c
 
 ## <a name="features"></a>Features
 [back to top](#top)
+
+### Gems Used
+- [tty-prompt](https://github.com/piotrmurach/tty-prompt) by [Piotr Murach](https://github.com/piotrmurach)
+- [tty-box](https://github.com/piotrmurach/tty-box) by [Piotr Murach](https://github.com/piotrmurach)
+- [tty-progressbar](https://github.com/piotrmurach/tty-progressbar) by [Piotr Murach](https://github.com/piotrmurach)
+- [colorize](https://github.com/fazibear/colorize) by [Michael Kalbarczyk](https://github.com/fazibear)
+- [rubocop](https://github.com/rubocop/rubocop) by [Bozhidar Batsov](https://github.com/bbatsov)
+- [rspec](https://github.com/rspec/rspec-core) by [rspec](https://github.com/rspec)
 
 ### Tasks
 
