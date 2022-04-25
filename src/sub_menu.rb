@@ -101,32 +101,31 @@ class SubMenu < Menu
     end
   end
 
-
   # CONSTRUCTS A MENU FOR WIPING ALL TASKS
 
   def wipe
     system('cls') || system('clear')
     if TTY::Prompt.new.select(
-      "This will completely wipe your list. Are your sure?",
+      'This will completely wipe your list. Are your sure?',
       { 'Yes' => true, 'No' => false },
       help: '',
       symbols: { marker: '•', cross: ' ' },
       active_color: :cyan
     ) &&
-    TTY::Prompt.new.select(
-      "There are no recovery methods... are you definitely sure?",
-      { 'Yes' => true, 'No' => false },
-      help: '',
-      symbols: { marker: '•', cross: ' ' },
-      active_color: :cyan
-    )
+       TTY::Prompt.new.select(
+         'There are no recovery methods... are you definitely sure?',
+         { 'Yes' => true, 'No' => false },
+         help: '',
+         symbols: { marker: '•', cross: ' ' },
+         active_color: :cyan
+       )
       @list.wipe_tasks
     end
   end
 
   # CONSTRUCTS A MENU FOR DELETING CHILD TASKS
 
-  def delete_child_task()
+  def delete_child_task
     system('cls') || system('clear')
     if TTY::Prompt.new.select(
       "Delete '#{@list.selected_child_name}'?",
@@ -165,7 +164,7 @@ class SubMenu < Menu
   def mini_move_child
     move_from = @list.selected_child_task
     move_to = TTY::Prompt.new.select('', active_color: :cyan,
-                                                       symbols: { marker: '•', cross: ' ' }) do |menu|
+                                         symbols: { marker: '•', cross: ' ' }) do |menu|
       menu.per_page 20
       menu.help 'Select a new position for task (↑/↓)'
       menu.default move_from + 1
@@ -186,5 +185,4 @@ class SubMenu < Menu
   def rename_child
     TTY::Prompt.new.ask(" Enter new description:\n", value: @list.selected_child_name)
   end
-
 end

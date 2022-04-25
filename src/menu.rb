@@ -5,7 +5,6 @@ require_relative 'list'
 require_relative 'progress'
 
 class Menu
-
   attr_reader :options
 
   def initialize(list)
@@ -59,14 +58,13 @@ class Menu
     @list.move_task(move_from, move_to)
   end
 
-
   # CONSTRUCTS A MINIMAL MENU FOR MOVING TASK ON CL
 
   def mini_move
     move_options = @list.list_task_mover
     move_from = @list.selected_task
     move_to = TTY::Prompt.new.select('', active_color: :cyan,
-                                                       symbols: { marker: '•', cross: ' ' }) do |menu|
+                                         symbols: { marker: '•', cross: ' ' }) do |menu|
       menu.per_page 20
       menu.help 'Select a new position for task (↑/↓)'
       menu.default(move_from + 1)
