@@ -37,6 +37,7 @@ class List
     end
   end
 
+  # returns a list of child task descr.
   def list_child_descriptions
     @tasks[selected_task]['child_tasks'].map do |task|
       # if child task is complete it will be returned with disabled color
@@ -48,6 +49,7 @@ class List
     end
   end
 
+  # returns child list where only selected is not greyed / disabled
   def list_child_descriptions_greyed
     @tasks[selected_task]['child_tasks'].map do |task|
       if task['is_selected_child?']
@@ -58,6 +60,7 @@ class List
     end
   end
 
+  # returns list specifically for moving tasks
   def list_task_mover
     @tasks.each_with_index.map do |task, index|
       if task['is_selected?']
@@ -68,6 +71,7 @@ class List
     end
   end
 
+  # returns list for moving child task
   def list_child_mover
     @tasks[selected_task]['child_tasks'].each_with_index.map do |task, index|
       if task['is_selected_child?']
@@ -78,6 +82,7 @@ class List
     end
   end
 
+  # returns list where parents contain arrows and completed / irrelevant tasks are greyed
   def list_greyed
     @tasks.each_with_index.map do |task, _index|
       if is_selected?(task['id'])
@@ -98,12 +103,14 @@ class List
     end
   end
 
+  # returns an entirely greyed and disblaed list
   def list_all_greyed
     @tasks.each_with_index.map do |task, _index|
       { name: task['description'].colorize(Colors.DISABLED), value: task['id'], disabled: '' }
     end
   end
 
+  # returns all task and child-task ids
   def task_ids
     all_task_ids = @tasks.map { |task| task['id'] }
     @tasks.each do |task|
@@ -114,6 +121,7 @@ class List
     all_task_ids
   end
 
+  # returns a unique id
   def unique_id
     if @tasks.length > 0
       task_ids.max + 1
@@ -174,18 +182,21 @@ class List
     @tasks = []
   end
 
+  # takes a task's id and returns its index in list
   def id_to_index(id)
     index = 0
     tasks.each_with_index { |t, i| index = i if t['id'] == id }
     index
   end
 
+  # takes a child-task's id and returns its index in list
   def child_id_to_index(pid, cid)
     index = 0
     tasks[id_to_index(pid)]['child_tasks'].each_with_index { |t, i| index = i if t['id'] == cid }
     index
   end
 
+  # takes id and checks whether slected
   def is_selected?(id)
     @tasks[id_to_index(id)]['is_selected?']
   end
@@ -194,6 +205,7 @@ class List
     @tasks[selected_task]['child_tasks'][child_id_to_index(selected_task_id, id)]['is_selected_child?']
   end
 
+  # returns index of task that is currently selected
   def selected_task
     i = 0
     @tasks.each_with_index do |task, index|
@@ -202,6 +214,7 @@ class List
     i
   end
 
+  # returns id of task that is currently selected
   def selected_task_id
     i = 0
     @tasks.each do |task|
@@ -210,6 +223,7 @@ class List
     i
   end
 
+  # returns name of task that is currently selected
   def selected_task_name
     @tasks[selected_task]['description']
   end
@@ -234,10 +248,12 @@ class List
     i
   end
 
+  # selects a task
   def select_task(id)
     @tasks.each { |t| t['is_selected?'] = true if t['id'] == id }
   end
 
+  # selects a child task
   def select_child_task(pid, cid)
     @tasks[id_to_index(pid)]['child_tasks'].each { |t| t['is_selected_child?'] = true if t['id'] == cid }
   end
@@ -275,14 +291,17 @@ class List
     @tasks[selected_task]['is_complete?'] = false
   end
 
+  # takes id and checks if complete
   def is_complete?(answer)
     @tasks[id_to_index(answer)]['is_complete?']
   end
 
+  # checks if selected child task is complete
   def is_child_complete?
     @tasks[selected_task]['child_tasks'][selected_child_task]['is_complete?']
   end
 
+  # for checking if parent is complete after its children have changed
   def check_for_complete_parent
     complete = true
     if @tasks[selected_task]['child_tasks'].length > 0
@@ -295,6 +314,7 @@ class List
     complete
   end
 
+  # counts total amount of tasks and child-tasks
   def count_tasks
     amount_of_tasks = @tasks.length
     @tasks.each do |task|
@@ -304,6 +324,7 @@ class List
     amount_of_tasks
   end
 
+  # counts total amount of complete tasks and child-tasks
   def count_complete_tasks
     complete_tasks = 0
     @tasks.each do |task|
