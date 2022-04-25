@@ -476,6 +476,36 @@ The trello board used during this project can be found [here](https://trello.com
 
 ![Trello Board](./docs/trello.png)
 
+## Testing Procedure
+
+When beginning this project, my aim was to use **TDD** for the entire development process. A few tests in, however, I realised how difficult this would be - especially with my reliance on loading external json files. I researched a little bit into using mock files, but after getting more confused, and then consulting my educator; I decided it would be best to abstract out as much of the external file handling logic as possible to separate methods and test whatever was left.
+
+Even with this minimal testing approach, being new to testing in general really slowed me down. In order to get this project over the finish line in time, I decided to abandon the TDD approach, and rely on a few simple tests to tell me if the core logic of my program was working.
+
+I acknowledge that in the long run, not using TDD would have created more debugging time; however, to an inexperienced tester, using the TDD approach may have stopped me from getting this project finished in time. I want to go back and implement more tests as I develop this program in the future, and on the next project will try to implement a TDD approach for the entire development process.
+
+My core tests included 13 tests in the **list class** and **Process ARGV Module**
+
+The **List** tests included 9 tests in 2 different contexts, and ensured that:
+
+**given a task list:**
+- task lists were being passed to menus correctly
+- tasks' unique id's were being generated and returned correctly
+- new tasks were being added to the task list
+
+**given a task list with a selected task:**
+- selected tasks were returning the correct id's
+- selected tasks were being unselected properly
+- unselected tasks could be selected properly
+
+The **Process ARGV** included 4 tests, and ensured that:
+
+**given a list and task index:**
+- the argv processor could find whether a specific task index existed
+- the argv processor could find whether a specific child task existed in a parent task
+
+Although these tests were simple, they helped to give me valuable feedback when refactoring the application. A quick run of `rspec` confirmed that the fundamental list logic was still working, that lists were being provided to menus, and that the argv processor was accessing tasks correctly.
+
 ## Flow Charts
 
 ### General Flowchart

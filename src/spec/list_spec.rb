@@ -28,7 +28,7 @@ describe List do
                                             }])
     end
 
-    it 'should return array of hashes containing {task_description => id}' do
+    it 'should return array of hashes containing descriptions and ids' do
       expect(@list.list_task_descriptions).to eq([
                                                    { name: 'Do the laundry', value: 6 },
                                                    { name: 'Go for walk', value: 8 },
