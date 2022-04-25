@@ -79,6 +79,12 @@ module ProcessARGV
         sub_menu.wipe
         list.write_tasks
         feedback(nil, 'list wiped')
+      elsif argv[0] == 'help'
+        # appends file name onto path/to/script
+        # necessary because file not in working dir
+        help = File.open(File.join(File.dirname(__FILE__), 'help.txt'), 'r+')
+        puts help.read()
+        help.close
       else
         puts HELP_ERROR
       end

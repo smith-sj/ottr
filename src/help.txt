@@ -1,0 +1,20 @@
+The # and @ symbols in this help file represent numbers.
+DO NOT include these symbols in the command.
+
+e.g 'ottr comp 5 6' to complete 6th child of 5th task
+
+`init` --------------- initiate ottr in working directory
+`log` ---------------- show a list of all tasks and child-tasks
+`add "task name" ----- add new task
+`add # "task name"` -- add new child-task to task in position #
+`comp #` ------------- complete task in position #
+`comp # @` ----------- complete child-task in pos @ of parent in pos #
+`open #` ------------- re-open task in pos #
+`open # @` ----------- re-open child-task in pos @ of parent in pos #
+`move #` ------------- move task in pos #
+`move # @` ----------- move child-task in pos @ of parent in pos #
+`del #` -------------- delete task in pos #
+`del # @` ------------ delete child-task in pos @ of the parent in pos #
+`name #` ------------- re-name the task in pos #
+`name # @` ----------- re-name the child-task in pos @ of the parent in pos #
+`wipe` --------------- wipe the entire list
