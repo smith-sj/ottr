@@ -67,6 +67,7 @@ To initiate ottr in any directory, simply `cd` into that directory and run `ottr
 
 ### Ottr from the command line
 
+* `ottr help` prints a list of all ottr commands
 * `ottr init` initiates ottr in the current working directory
 * `ottr add "just an example"` will add a new task called *just an example*
 * `ottr add 1 "a nested example"` will add a new child-task called *a nested example* to the task in position 1
