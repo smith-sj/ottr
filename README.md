@@ -2,13 +2,28 @@
 
 ottr repo: https://github.com/smith-sj/ottr
 
-## Overview
+## Table of Contents
+
+### ottr Documentation
+- [Overview](#overview)
+- [Set-up & Installation](#setup)
+- [How to Use Ottr](#howto)
+
+### Assignment-specific documentation
+- [Style Guide](#styleguide)
+- [Features](#features)
+- [Implementaion Plan](#plan)
+- [Trello](#trello)
+- [Testing Procedure](#testing)
+- [Flowcharts](#flow)
+
+## <a name="overview"></a>Overview
 Organisational Task Tracker (ottr) is a repository-specific terminal app for keeping track of tasks associated with a specific project. 
 Once initialized inside of a repo, users can add, remove, re-organize, and nest tasks, either straight from the command line or by launching
 the ottr user interface. ottr was designed with flexible workflows in mind, so everything that can be done from ottr's UI can also be achieved
 through command line arguments.
 
-## Set-up & Installation
+## <a name="setup"></a>Set-up & Installation
 
 These installation instructions assume you are using a UNIX-like system with Ruby installed.
 
@@ -40,7 +55,7 @@ the way it was intended to be run.
 
 If the link was successful you should be able to initiate ottr in any directory by `cd`ing into it and running `ottr init`. Ottr can then be used in that directory by running `ottr`.
 
-## How to use ottr
+## <a name="howto"></a>How to use ottr
 
 The easiest way to learn how to use ottr is to jump into the UI and play around with it.
 
@@ -152,7 +167,7 @@ A more mature list may look something like this:
 ![new_list](./docs/full-list.png)
 
 
-## Style Guide
+## <a name="styleguide"></a>Style Guide
 
 Ottr was created with ***The Ruby Style Guide*** by *Alex J. Murphy* in mind. The style guide contains best practices to help Ruby programmers write code that can be easily interpreted and maintained by other programmers. It was based off suggestions and feed back from the Ruby community as well as resources such as [***Programming Ruby***](https://pragprog.com/titles/ruby4/programming-ruby-1-9-2-0-4th-edition/) and [***The Ruby Programming Language***](https://www.amazon.com/Ruby-Programming-Language-David-Flanagan/dp/0596516177)
 
@@ -162,7 +177,7 @@ Thanks to Murphy's code analyzer and formatter, [***Rubocop***](https://github.c
 
 *source: https://github.com/rubocop/rubocop*
 
-## Features
+## <a name="features"></a>Features
 
 ### Tasks
 
@@ -239,7 +254,7 @@ Some command line arguments like `ottr move` or `ottr rename` may require an ext
 
 Finally the command line handler should always print some form of feedback, to let the user know that their command worked, or didn't work.
 
-## Implementation Plan
+## <a name="plan"></a>Implementation Plan
 
 ### ***Total estimated time:*** *58 hours 15 mins*
 
@@ -470,13 +485,13 @@ The main loop for the program will be a control flow statement, it will implemen
 
 The control flow will keep looping back to the main menu, and the load/save & select/deselect methods will have to be strategically placed so that any unexpected termination of the program will not effect the performance of the app. *(e.g. all tasks must be deselected as soon as the program runs, in case it quit unexpectedly the last time and a task was still in a selected state.)*
 
-## Trello Board
+## <a name="trello"></a>Trello Board
 
 The trello board used during this project can be found [here](https://trello.com/invite/b/IUxAVH0w/2994084c7a723e0f590819e1a02e32b0/ottr)
 
 ![Trello Board](./docs/trello.png)
 
-## Testing Procedure
+## <a name="testing"></a>Testing Procedure
 
 When beginning this project, my aim was to use **TDD** for the entire development process. A few tests in, however, I realised how difficult this would be - especially with my reliance on loading external json files. I researched a little bit into using mock files, but after getting more confused, and then consulting my educator; I decided it would be best to abstract out as much of the external file handling logic as possible to separate methods and test whatever was left.
 
@@ -506,7 +521,7 @@ The **Process ARGV** included 4 tests, and ensured that:
 
 Although these tests were simple, they helped to give me valuable feedback when refactoring the application. A quick run of `rspec` confirmed that the fundamental list logic was still working, that lists were being provided to menus, and that the argv processor was accessing tasks correctly.
 
-## Flow Charts
+## <a name="flow"></a>Flow Charts
 
 ### General Flowchart
 
