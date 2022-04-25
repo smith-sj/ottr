@@ -177,6 +177,8 @@ For example, here is a list of different states a task may be in, folowed by a l
 
 and so on...
 
+Another important aspect to note is that each task should have a ***unique ID***, that can be referenced when performing actions on them. This will mean we don't have to worry about errors relating to task names when performing methods on tasks. It also means that there is less validation required for task names, as long as it contains a character of some form and even if it shares the same name as another task, it will be valid.
+
 ### CHILD-TASKS
 
 A child-task is a task nested inside of another task. This feature will allow users to break down bigger tasks into smaller steps. Like regular tasks, child tasks will have complete or in-complete states, however they will not be able to nest other tasks, and so do not have a parental state.
@@ -193,16 +195,115 @@ Sub-menus will pop up when a task or child-task is selected. They should show al
 
 ### PROGRESS BAR
 
-This feature should be a quick and easy way for the user to get an idea of how far through the project they are. The progress bar will be visible from both the main menu and sub-menu views, it will always display a visual representation of the **completed percentage** of all tasks. It should also indicate the fraction of completed tasks / total tasks.
+This feature will provide a quick and easy way for the user to get an idea of how far through the project they are. The progress bar will be visible from both the main menu and sub-menu views, it will always display a visual representation of the **completed percentage** of all tasks. It should also indicate the fraction of completed tasks / total tasks.
 
 ### DEFAULT OPTIONS
 
-- ***Add Task***
-- ***Complete Task***
-- ***Rename***
-- ***Move***
-- ***Delete***
+The following options are considered a main feature of the program, as they will be what gives ottr its organizational qualities. Each option may behave slightly different between states and task types, but will perform the following actions:
+
+- ***Add Task***: Add a task to the main menu or a child-task to a parent-task's sub-menu
+- ***Complete***: Mark a task or child-task as complete
+- ***Re-open***: Mark a completed task or child-task as incomplete
+- ***Rename***: Rename a task or child-task
+- ***Move***: Move task or child-task to a different position in its list
+- ***Delete***: Delete a task from its list
 
 
 ### COMMAND LINE ARGUMENTS HANDLER
+
+This feature will ensure eveyrthing that can be done from the ottr UI, will be achievable through command line arguments.
+
+For example, instead of launching ottr and selecting **Add Task** the user should be able to run a command directly from the directory such as `ottr add "name of task"`.
+
+All commands from the **DEFAULT OPTIONS** section should be included in this feature as well as:
+
+- `ottr init` for initiating ottr in the directory
+- `ottr help` for displaying a list of commands
+- `ottr log` for printing the task list to the terminal
+- `ottr wipe` for wiping the entire task list
+
+In order to target specific tasks in the list, a numbering system will be implemented. When `ottr log` is run, the program should return something along the lines of:
+
+```
+1. Example of a task
+    1.1. Example of a child task
+    1.2. Another child task
+    1.3. Another example of a child task
+2. Another example of a task
+3. One more example of a task
+```
+
+The user should be able to access a main task by referencing its position in the list. `ottr del 2`, for example, should delete the 2nd task, labeled *'Another example of a task'*. Whereas something like `ottr del 1 3` should delete the 3rd child-task of the 1st task, labeled *'Another example of a child task'*.
+
+Some command line arguments like `ottr move` or `ottr rename` may require an extra prompt in the terminal for more user input or confirmation.
+
+Finally the command line handler should always print some form of feedback, to let the user know that their command worked, or didn't work.
+
+## Implementation Plan
+
+### List Class
+
+In order to implement the tasks and child-tasks features, I'v decided to create a list class. My inital thoughts were to create classes for both types of tasks. However, when considering the overall architecture of my program, and the classes needed in order to implement the other features, I decided to instead create a single ***List class***. ***List instances*** can be created, that contain an ***instance variable*** called ***@tasks*** which initiates as an empty array. This ***@tasks array*** will be store tasks as ***hashes***, and each hash may contain another array of child-tasks, also represented as hashes.
+
+*Using the previous example, the **@tasks** array may look something like this:
+
+```
+[
+    {
+    'id' => 2
+    'description' => "Example of a task",
+    'is_complete?' => false,
+    'is_parent?' => false,
+    'is_selected?' => false,
+    'child_tasks' => []
+    },
+    {
+    'id' => 2
+    'description' => "Another example of a task",
+    'is_complete?' => false,
+    'is_parent?' => true,
+    'is_selected?' => false,
+    'child_tasks' => [{
+                        'id' => 4
+                        'description' => "Example of a child task",
+                        'is_complete?' => false,
+                        'is_selected?' => false,
+                        },
+                        {
+                        'id' => 5
+                        'description' => "Another child task",
+                        'is_complete?' => false,
+                        'is_selected?' => false,
+                        },
+                        {
+                        'id' => 6
+                        'description' => "Another example of a child task",
+                        'is_complete?' => false,
+                        'is_selected?' => false,
+                        },]
+    },
+    {
+    'id' => 3
+    'description' => "One more example of a task",
+    'is_complete?' => false,
+    'is_parent?' => false,
+    'is_selected?' => false,
+    'child_tasks' => []
+    }
+]
+```
+
+Using this structure the ***list instance*** will have full knowledge of all tasks, child-tasks as well as their states and any other data relating to them, such as their unique ID.
+
+### JSON Handler Module
+
+Any changes to tasks will be made via the **List instance**, which as previously discussed, happens by updating an **instance variable** called **@tasks**. After each change to **@tasks**, the entire array can be written to a **json file** (over-writing any previous data), so if the user quits the app and loads it back up again, the **array** stored in the **json file** can be loaded back into the **@tasks** variable of the new **List instance**.
+
+This loading and writing cycle will be handled by a **JSON Handler** module. It will also include methods for parsing the information from **json format** to a **ruby array** and vice versa.
+
+### Menu Class
+
+### Sub-Menu Class
+
+### Process ARGV Module
 
