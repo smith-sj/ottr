@@ -241,18 +241,26 @@ Finally the command line handler should always print some form of feedback, to l
 
 ## Implementation Plan
 
-***Total estimated time: 32 hours***
+***Total estimated time:*** 55 hours 45 mins
 
 ### List Class
 
-#### **Estimated Time:** *8 hours*
+#### **Estimated Time:** *10 hours*
 
 #### **Checklist:**
 
 - brainstorm the design of the class *(1 hr)*
 - Make the class and the initalize method *(1 hr)*
 - Write each method for the class *(3 hrs)*
+    - add task
+    - delete task
+    - move task
+    - complete task
+    - reopen task
+    - select task
+    - deselect task
 - write tests for the class *(3 hrs)*
+- refactor class *(2 hrs)*
 
 #### **Outline:**
 
@@ -314,12 +322,14 @@ Accessing child-tasks will be slightly more challenging, but as long as we know 
 
 ### JSON Handler Module
 
-#### **Estimated Time:** *3 hours*
+#### **Estimated Time:** *2 hours 45 mins*
 
 #### **Checklist:**
 
 - brainstorm the design of the module *(1 hr)*
-- Write each method for the module *(1 hr)*
+- Write load json method *(15 mins)*
+- Write save json method *(15 mins)*
+- Write parse json method *(15 mins)*
 - write tests for the module *(1 hr)*
 
 #### **Outline:**
@@ -331,7 +341,7 @@ This loading and writing cycle will be handled by a **JSON Handler** module. It 
 
 ### Menu Class
 
-#### **Estimated Time:** *10 hours*
+#### **Estimated Time:** *12 hours*
 
 #### **Checklist**
 
@@ -340,6 +350,7 @@ This loading and writing cycle will be handled by a **JSON Handler** module. It 
 - Make the class and the initalize method *(1 hr)*
 - Write each method for the class *(4 hrs)*
 - write tests for the class *(3 hrs)*
+- refactor the class * (2 hrs)
 
 #### **Outline:**
 
@@ -364,14 +375,19 @@ The ***Menu Class*** will need to contain methods for initiating the menu object
 
 ### Sub-Menu Class
 
-#### **Estimated Time:** *8 hours*
+#### **Estimated Time:** *9 hours*
 
 #### **Checklist**
 
 - brainstorm the design of the class *(1 hr)*
 - Make the class and the initalize method *(1 hr)*
-- Write each method for the class *(3 hrs)*
+- Write each populater method for the class *(3 hrs)*
+- create a move task menu *(15 mins)*
+- create a move child-task menu *(15 mins)*
+- create minimal menus for the argv prompts *(15 mins)*
+- create an 'are you sure' prompt *(15 mins)*
 - write tests for the class *(3 hrs)*
+
 
 #### **Outline:**
 
@@ -408,3 +424,37 @@ When running `ottr`, the module will check whether it has been **initialised**. 
 The module will need to include a method for initialising ottr. When the user runs `ottr init`, it should check whether a hidden file called `.ottr.json` exists in the current working directory. If it does it will return `'ottr already initialised'` but if it doesn't, it will call on the **JSON Handler** module to create the json file.
 
 Because the ***List Class*** contains all of the methods we need to interact with the array inside **json file**, it should be as easy as intitiating a new instance of the **List Class** and using its methods to perform the various actions. A sub-menu may also be needed to make confirmations and name changes etc.
+
+### Create Main Loop
+
+#### **Estimated Time:** *11 hours*
+
+#### **Checklist**
+
+- brainstorm the design of the main loop *(1 hr)*
+- write the control flow logic for the main program *(3 hrs)*
+- incorporate methods from the List, Menu and Sub-Menu classes into the control flow *(4 hrs)*
+- incorporate the Process ARGV module into the start of the program *(2 hour)*
+- identify points in the control flow where load/save, select/deselct methods should take place (think about unexpected quitting) *(1 hour)*
+
+#### **Outline:**
+
+The main loop for the program will be a control flow statment, it will implement all of the class and modules to facilitate the user's input and return output. 
+
+The control flow will keep looping back to the main menu, and the load/save & select/deselect methods will have to be strategically placed so that any unexpected termination of the program will not effect the performance of the app. *(e.g. all tasks must be deselected as soon as the program runs, in case it quit unexpectedly the last time and a task was still in a selected state.)*
+
+## Trello Board
+
+The trello board used during this project can be found [here](https://trello.com/invite/b/IUxAVH0w/2994084c7a723e0f590819e1a02e32b0/ottr)
+
+![Trello Board](./readme_images/trello.png)
+
+## Flow Charts
+
+### General Flowchart
+
+![General Flowchart](./readme_images/general_flowchart.png)
+
+### Detailed Flowchart
+
+![Detailed Flowchart](./readme_images/flowchart.png)
