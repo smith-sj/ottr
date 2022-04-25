@@ -62,7 +62,7 @@ module ProcessARGV
       print_help
       return false
     elsif !@@init_status
-      puts 'ottr not initialized'
+      puts 'OTTR not initialized. Run ottr help, or consult README instructions.'
       return false
     end
 

@@ -155,5 +155,5 @@ if ProcessARGV.init_status == true
     end
   end
 else
-  puts 'OTTR not initialized.'
+  puts 'OTTR not initialized. Run ottr help, or consult README instructions.'
 end
