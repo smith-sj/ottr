@@ -83,7 +83,7 @@ the ottr UI can be accessed by running `ottr`
 
 *A newly initialized list will look like this:*
 
-![new_list](./readme_images/new_list.png)
+![new_list](./docs/new_list.png)
 
 Navigate the menu using ↑/↓ and press enter to select your option.
 
@@ -91,7 +91,7 @@ Use the `Add task` option to add some task.
 
 *With a few tasks added the list will look like this:*
 
-![new_list](./readme_images/example_tasks.png)
+![new_list](./docs/example_tasks.png)
 
 Select one of the tasks and press enter
 
@@ -99,7 +99,7 @@ This will open a sub-menu for that task with a list of options
 
 *The sub-menu for a task looks like this:*
 
-![new_list](./readme_images/sub-menu.png)
+![new_list](./docs/sub-menu.png)
 
 Add a child-task to the selected task by selecting the `Add Task` option from the sub-menu.
 
@@ -107,7 +107,7 @@ A prompt will appear asking for a new name or the child-task.
 
 If you wish to **cancel the new task**, simply **leave the field blank**, otherwise enter a name or description for your task.
 
-![new_list](./readme_images/name_task.png)
+![new_list](./docs/name_task.png)
 
 After adding a few child-tasks, the child tasks will fill up the sub-menu.
 
@@ -115,11 +115,11 @@ The parent-task's options will still be reachable below the child-tasks.
 
 *The task's sub-menu will now look like this:*
 
-![new_list](./readme_images/child_tasks.png)
+![new_list](./docs/child_tasks.png)
 
 *Selecting a child-task will open another sub-menu for that child-task:*
 
-![new_list](./readme_images/child_sub-menu.png)
+![new_list](./docs/child_sub-menu.png)
 
 Start ticking off some of some of the tasks by selecting the `Complete` option.
 
@@ -129,7 +129,7 @@ Complete tasks are displayed in dark grey.
 
 *The 3 child tasks have been completed, so the parent is greyed out and the progress bar shows that 50% of the tasks are complete:*
 
-![new_list](./readme_images/half_complete.png)
+![new_list](./docs/half_complete.png)
 
 *note: parent-tasks can only be closed by completing their child-tasks, similarily they may only be re-opened by re-opening one of their child-tasks. Adding a new child-task to a closed parent-task will re-open it; deleting an open child-task will close it's parent-task, if the remaining child-tasks are closed.*
 
@@ -139,17 +139,17 @@ When the `move option` is selected, a menu will appear, with the selected task b
 
 Select the new position of the task by using ↑/↓ and pressing **enter**.
 
-![new_list](./readme_images/move.png)
+![new_list](./docs/move.png)
 
 Regular tasks, parent-tasks and child-tasks can all be renamed and deleted.
 
 Both the `rename` and `delete` options, will bring up their respective prompts.
 
-![new_list](./readme_images/split-screen.png)
+![new_list](./docs/split-screen.png)
 
 A more mature list may look something like this:
 
-![new_list](./readme_images/full-list.png)
+![new_list](./docs/full-list.png)
 
 
 ## Style Guide
@@ -241,11 +241,12 @@ Finally the command line handler should always print some form of feedback, to l
 
 ## Implementation Plan
 
-***Total estimated time:*** 55 hours 45 mins
+### ***Total estimated time:*** *58 hours 15 mins*
 
 ### List Class
 
 #### **Estimated Time:** *10 hours*
+#### **Priority:** *High*
 
 #### **Checklist:**
 
@@ -320,9 +321,11 @@ The list class will also contain all of the methods needed for altering the list
 
 Accessing child-tasks will be slightly more challenging, but as long as we know which task has been selected, as well as which of its child-tasks has been selected we can access it like this `@tasks[selected_task]['child_tasks]['selected_child']`. So renaming a child task might look something like this `@tasks[selected_task]['child_tasks]['selected_child']['description'] = 'new description'`
 
+
 ### JSON Handler Module
 
 #### **Estimated Time:** *2 hours 45 mins*
+#### **Priority:** *High*
 
 #### **Checklist:**
 
@@ -334,7 +337,6 @@ Accessing child-tasks will be slightly more challenging, but as long as we know 
 
 #### **Outline:**
 
-
 Any changes to tasks will be made via the **List instance**, which as previously discussed, happens by updating an **instance variable** called **@tasks**. After each change to **@tasks**, the entire array can be written to a **json file** (over-writing any previous data), so if the user quits the app and loads it back up again, the **array** stored in the **json file** can be loaded back into the **@tasks** variable of the new **List instance**.
 
 This loading and writing cycle will be handled by a **JSON Handler** module. It will also include methods for parsing the information from **json format** to a **ruby array** and vice versa.
@@ -342,11 +344,12 @@ This loading and writing cycle will be handled by a **JSON Handler** module. It 
 ### Menu Class
 
 #### **Estimated Time:** *12 hours*
+#### **Priority:** *High*
 
-#### **Checklist**
+#### **Checklist:**
 
 - brainstorm the design of the class *(1 hr)*
-- learn how to use TTY prompt *(1 hr)*
+- learn how to use TTY prompt and Colorize *(1 hr)*
 - Make the class and the initalize method *(1 hr)*
 - Write each method for the class *(4 hrs)*
 - write tests for the class *(3 hrs)*
@@ -372,12 +375,15 @@ Each time the ottr UI is initiated, a **Menu Instance** will be initiated. This 
 
 The ***Menu Class*** will need to contain methods for initiating the menu object, populating it with tasks + default options, and constructing the actual menu itself.
 
+Finally the menu class will also have to utilize the [**Colorize**](https://github.com/fazibear/colorize) gem by [***Michał Kalbarczyk***](https://github.com/fazibear) for coloring completed tasks as dark-grey and coloring default options as a different color to tasks.
+
 
 ### Sub-Menu Class
 
 #### **Estimated Time:** *9 hours*
+#### **Priority:** *High*
 
-#### **Checklist**
+#### **Checklist:**
 
 - brainstorm the design of the class *(1 hr)*
 - Make the class and the initalize method *(1 hr)*
@@ -404,6 +410,7 @@ Much like the main menus, the sub-menu's will return **unique ID's** for tasks, 
 ### Process ARGV Module
 
 #### **Estimated Time:** *11 hours*
+#### **Priority:** *Medium*
 
 #### **Checklist**
 
@@ -428,6 +435,7 @@ Because the ***List Class*** contains all of the methods we need to interact wit
 ### Create Main Loop
 
 #### **Estimated Time:** *11 hours*
+#### **Priority:** *High*
 
 #### **Checklist**
 
@@ -443,18 +451,37 @@ The main loop for the program will be a control flow statment, it will implement
 
 The control flow will keep looping back to the main menu, and the load/save & select/deselect methods will have to be strategically placed so that any unexpected termination of the program will not effect the performance of the app. *(e.g. all tasks must be deselected as soon as the program runs, in case it quit unexpectedly the last time and a task was still in a selected state.)*
 
+### Create Progress Bar
+
+#### **Estimated Time:** *2 hours 30 mins*
+#### **Priority:** *Low*
+
+#### **Checklist**
+
+- brainstorm the design of the Progress Bar *(30mins)*
+- learn how to use TTY-progress bar *(15mins)*
+- create Progress Bar class *(15 mins)*
+- write method for calculating how many tasks have been completed *(30 mins)*
+- implement Progress Bar into other classes *(1 hour)*
+
+#### **Outline:**
+
+The main loop for the program will be a control flow statment, it will implement all of the class and modules to facilitate the user's input and return output. 
+
+The control flow will keep looping back to the main menu, and the load/save & select/deselect methods will have to be strategically placed so that any unexpected termination of the program will not effect the performance of the app. *(e.g. all tasks must be deselected as soon as the program runs, in case it quit unexpectedly the last time and a task was still in a selected state.)*
+
 ## Trello Board
 
 The trello board used during this project can be found [here](https://trello.com/invite/b/IUxAVH0w/2994084c7a723e0f590819e1a02e32b0/ottr)
 
-![Trello Board](./readme_images/trello.png)
+![Trello Board](./docs/trello.png)
 
 ## Flow Charts
 
 ### General Flowchart
 
-![General Flowchart](./readme_images/general_flowchart.png)
+![General Flowchart](./docs/general_flowchart.png)
 
 ### Detailed Flowchart
 
-![Detailed Flowchart](./readme_images/flowchart.png)
+![Detailed Flowchart](./docs/flowchart.png)
