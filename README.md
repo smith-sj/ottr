@@ -1,62 +1,86 @@
 # <a name="top"></a>ottr
 
-ottr repo: https://github.com/smith-sj/ottr
-
-## Table of Contents
-
-### Ottr Documentation
-- [Overview](#overview)
-- [Set-up & Installation](#setup)
-- [How to Use Ottr](#howto)
-
-### Assignment-specific Documentation
-- [Style Guide](#styleguide)
-- [Features](#features)
-- [Implementaion Plan](#plan)
-- [Trello](#trello)
-- [Testing Procedure](#testing)
-- [Flowcharts](#flow)
-
-## <a name="overview"></a>Overview
-[back to top](#top)
+> This was one of the more simple assignments from my web dev bootcamp a few years ago. It was also my favourite. The task was to build a simple terminal app in Ruby and I over-engineered the shit out of it. Enjoy!
 
 Organisational Task Tracker (ottr) is a repository-specific terminal app for keeping track of tasks associated with a specific project. 
 Once initialized inside of a repo, users can add, remove, re-organize, and nest tasks, either straight from the command line or by launching
 the ottr user interface. ottr was designed with flexible workflows in mind, so everything that can be done from ottr's UI can also be achieved
 through command line arguments.
 
+## Table of Contents
+
+### Ottr Documentation
+- [Set-up & Installation](#setup)
+- [How to Use Ottr](#howto)
+- [Features](#features)
+- [Flowchart](#flow)
+
 ## <a name="setup"></a>Set-up & Installation
 [back to top](#top)
 
 These installation instructions assume you are using a UNIX-like system with Ruby installed.
 
-### Running the script
+## Installation Steps
 
-The following instructions will allow you to run the script without proper installation;
-this is okay for testing ottr out, but won't allow you to run it from other directories.
+#### 1. Clone the ottr repository:
+```
+git clone <repository_url>
+```
+#### 2. Navigate to the `src` directory of the cloned repository:
+```
+cd ottr/src
+```
+#### 3. Run the installer script to install the required Ruby gems:
+```
+./installer.sh
+```
+#### 4. Add the `src` directory to your `$PATH` so you can run `ottr` from any directory:
+- Open your shell configuration file (e.g., `~/.zshrc` or `~/.bashrc`) in a text editor:
+ ```
+ nano ~/.zshrc
+ # or
+ nano ~/.bashrc
+```
+- Add the following line to the end of the file, replacing `path_to_ottr` with the full path to the cloned repository:
+```
+ export PATH="path_to_ottr/src:$PATH"
+```
+- Save the file and reload your shell configuration:
+```
+ source ~/.zshrc
+ # or
+ source ~/.bashrc
+```
+#### 5. Verify that `ottr` is correctly installed by running:
+```
+ottr help
+```
 
-1. clone the ottr repo
-1. open terminal
-1. `cd` into the `ottr/src` directory containing `ottr`
-1. run `./installer.sh`
-1. initialize ottr by running `./ottr init`
 
-Now that ottr is initialized you can run the script using the command `./ottr` from the current working directory 
+## Using Ottr
 
-### Installing ottr
+#### 1. Navigate to the directory where you want to use `ottr`:
+```
+cd /path/to/your/project
+```
+#### 2. Initialize ottr in that directory:
+```
+ottr init
+```
+#### 3. After initialization, you can access `ottr` UI in that directory by simply running:
+```
+ottr
+```
+#### 4. If you'd prefer to use command line args instead, see:
+```
+ottr help
+```
 
-The following instructions are a bit more involved but will allow you to use ottr from any directory, 
-the way it was intended to be run.
+## Notes
 
-1. clone the ottr repo
-1. open terminal
-1. run `echo $PATH` to see a list of directories. You will need to choose one for installing ottr, traditionally it's best to use `/usr/local/bin/`
-1. if you would like to use `/usr/local/bin/` but it doesn't exist, create it using `mkdir -p /usr/local/bin`
-1. `cd` into the `ottr/src` directory containing `ottr`
-1. run `./installer.sh` to install required ruby gems
-1. create a softlink by running `sudo ln -s $PWD/ottr /usr/local/bin/` (or use the path you chose in step 3)
-
-If the link was successful you should be able to initiate ottr in any directory by `cd`ing into it and running `ottr init`. Ottr can then be used in that directory by running `ottr`.
+- Make sure you have Ruby installed and configured correctly on your system (e.g., using `rbenv` or `RVM`).
+- If you encounter any permission issues, you might need to make the `installer.sh` script executable:
+   chmod +x installer.sh
 
 ## <a name="howto"></a>How to use ottr
 [back to top](#top)
@@ -186,14 +210,6 @@ Thanks to Murphy's code analyzer and formatter, [***Rubocop***](https://github.c
 ## <a name="features"></a>Features
 [back to top](#top)
 
-### Gems Used
-- [tty-prompt](https://github.com/piotrmurach/tty-prompt) by [Piotr Murach](https://github.com/piotrmurach)
-- [tty-box](https://github.com/piotrmurach/tty-box) by [Piotr Murach](https://github.com/piotrmurach)
-- [tty-progressbar](https://github.com/piotrmurach/tty-progressbar) by [Piotr Murach](https://github.com/piotrmurach)
-- [colorize](https://github.com/fazibear/colorize) by [Michael Kalbarczyk](https://github.com/fazibear)
-- [rubocop](https://github.com/rubocop/rubocop) by [Bozhidar Batsov](https://github.com/bbatsov)
-- [rspec](https://github.com/rspec/rspec-core) by [rspec](https://github.com/rspec)
-
 ### Tasks
 
 The entire ottr application revolves around creating and organizing a list of tasks. The tasks themselves must have a collection of actions that can be performed on them. 
@@ -269,283 +285,15 @@ Some command line arguments like `ottr move` or `ottr rename` may require an ext
 
 Finally the command line handler should always print some form of feedback, to let the user know that their command worked, or didn't work.
 
-## <a name="plan"></a>Implementation Plan
-[back to top](#top)
-
-### ***Total estimated time:*** *58 hours 15 mins*
-
-### List Class
-
-#### **Estimated Time:** *10 hours*
-#### **Priority:** *High*
-
-#### **Checklist:**
-
-- brainstorm the design of the class *(1 hr)*
-- Make the class and the initialize method *(1 hr)*
-- Write each method for the class *(3 hrs)*
-    - add task
-    - delete task
-    - move task
-    - complete task
-    - reopen task
-    - select task
-    - deselect task
-- write tests for the class *(3 hrs)*
-- refactor class *(2 hrs)*
-
-#### **Outline:**
-
-In order to implement the tasks and child-tasks features, I'v decided to create a list class. My initial thoughts were to create classes for both types of tasks. However, when considering the overall architecture of my program, and the classes needed in order to implement the other features, I decided to instead create a single ***List class***. ***List instances*** can be created, that contain an ***instance variable*** called ***@tasks*** which initiates as an empty array. This ***@tasks array*** will be store tasks as ***hashes***, and each hash may contain another array of child-tasks, also represented as hashes.
-
-*Using the previous example, the **@tasks** array may look something like this:*
-
-```
-[
-    {
-    'id' => 2
-    'description' => "Example of a task",
-    'is_complete?' => false,
-    'is_parent?' => false,
-    'is_selected?' => false,
-    'child_tasks' => []
-    },
-    {
-    'id' => 2
-    'description' => "Another example of a task",
-    'is_complete?' => false,
-    'is_parent?' => true,
-    'is_selected?' => false,
-    'child_tasks' => [{
-                        'id' => 4
-                        'description' => "Example of a child task",
-                        'is_complete?' => false,
-                        'is_selected?' => false,
-                        },
-                        {
-                        'id' => 5
-                        'description' => "Another child task",
-                        'is_complete?' => false,
-                        'is_selected?' => false,
-                        },
-                        {
-                        'id' => 6
-                        'description' => "Another example of a child task",
-                        'is_complete?' => false,
-                        'is_selected?' => false,
-                        },]
-    },
-    {
-    'id' => 3
-    'description' => "One more example of a task",
-    'is_complete?' => false,
-    'is_parent?' => false,
-    'is_selected?' => false,
-    'child_tasks' => []
-    }
-]
-```
-
-Using this structure the ***list instance*** will have full knowledge of all tasks, child-tasks as well as their states and any other data relating to them, such as their unique ID.
-
-The list class will also contain all of the methods needed for altering the list. This shouldn't be too hard because a list can be accessed like this `@tasks[i]` where `i` is the list's position. From there it is just a matter of writing methods for editing the list, most of which will just be methods of the **Array class**, such as `@tasks.delete_at(selected_task)`. Renaming a task might look something like this `@tasks['selected_task']['description'] = 'new description'`.
-
-Accessing child-tasks will be slightly more challenging, but as long as we know which task has been selected, as well as which of its child-tasks has been selected we can access it like this `@tasks[selected_task]['child_tasks]['selected_child']`. So renaming a child task might look something like this `@tasks[selected_task]['child_tasks]['selected_child']['description'] = 'new description'`
-
-
-### JSON Handler Module
-
-#### **Estimated Time:** *2 hours 45 mins*
-#### **Priority:** *High*
-
-#### **Checklist:**
-
-- brainstorm the design of the module *(1 hr)*
-- Write load json method *(15 mins)*
-- Write save json method *(15 mins)*
-- Write parse json method *(15 mins)*
-- write tests for the module *(1 hr)*
-
-#### **Outline:**
-
-Any changes to tasks will be made via the **List instance**, which as previously discussed, happens by updating an **instance variable** called **@tasks**. After each change to **@tasks**, the entire array can be written to a **json file** (over-writing any previous data), so if the user quits the app and loads it back up again, the **array** stored in the **json file** can be loaded back into the **@tasks** variable of the new **List instance**.
-
-This loading and writing cycle will be handled by a **JSON Handler** module. It will also include methods for parsing the information from **json format** to a **ruby array** and vice versa.
-
-### Menu Class
-
-#### **Estimated Time:** *12 hours*
-#### **Priority:** *High*
-
-#### **Checklist:**
-
-- brainstorm the design of the class *(1 hr)*
-- learn how to use TTY prompt and Colorize *(1 hr)*
-- Make the class and the initialize method *(1 hr)*
-- Write each method for the class *(4 hrs)*
-- write tests for the class *(3 hrs)*
-- refactor the class * (2 hrs)
-
-#### **Outline:**
-
-Now that a strategy for storing the tasks has been developed. A process for displaying the list, and interacting with it needs to be developed.
-
-The **Menu Class** will take the **@tasks** array from the current **List instance** and populate a **menu** with the top level tasks. The **default options** will also be appended to this list of items, producing a menu that contains all of the tasks, as well as the default options for the main menu.
-
-The menu will implement using the [**TTY-prompt**](https://github.com/piotrmurach/tty-prompt) gem by [**Piotr Murach**](https://github.com/piotrmurach).
-
-The `.select()` method from ***TTY-prompt*** shows a menu populated with choices that can be fed in as an array of **strings** or **hashes**. We'll feed it an **array of hashes**, where the **key** of each hash represents what will be shown in the menu and the **value** contains the value that is returned when the user makes their selection. In our case the **key** will be each task's name and the **value** will be each task's **unique id**.
-
-With the `.select()` method in mind, all we need to is take the returned value (which will always be a task id) and create a method that assigns it to a `selected_task` variable, which can be used in the **List Class** methods.
-
-The **default options** will be stored in the same menu, but the hash's **key** will contain the name of the option (e.g. `Delete`) and the **value** will contain a symbol like **:DELETE**.
-
-Now we know that if a menu returns an instance of **Integer**, then the user selected a **task**, but if the menu returns a symbol, the user selected a **default option**. If a task was selected then a sub-menu can be loaded for that task, whereas if a default option was selected, the appropriate action can be performed.
-
-Each time the ottr UI is initiated, a **Menu Instance** will be initiated. This instance contains **instance variables** with different combinations of default options that can be loaded into each menu, depending on the surrounding factors. (Sometimes we may need to load different default options). The current set of ***default options*** in use can be loaded into an ***options*** hash which will be used when constructing the menu.
-
-The ***Menu Class*** will need to contain methods for initiating the menu object, populating it with tasks + default options, and constructing the actual menu itself.
-
-Finally the menu class will also have to utilize the [**Colorize**](https://github.com/fazibear/colorize) gem by [***Michał Kalbarczyk***](https://github.com/fazibear) for coloring completed tasks as dark-grey and coloring default options as a different color to tasks.
-
-
-### Sub-Menu Class
-
-#### **Estimated Time:** *9 hours*
-#### **Priority:** *High*
-
-#### **Checklist:**
-
-- brainstorm the design of the class *(1 hr)*
-- Make the class and the initialize method *(1 hr)*
-- Write each *populater* method for the class *(3 hrs)*
-- create a move task menu *(15 mins)*
-- create a move child-task menu *(15 mins)*
-- create minimal menus for the argv prompts *(15 mins)*
-- create an 'are you sure' prompt *(15 mins)*
-- write tests for the class *(3 hrs)*
-
-
-#### **Outline:**
-
-The ***Sub-Menu Class*** will inherit the **Menu Class**, but will also include its own unique characteristics.
-
-An instance of the sub-menu class will be loaded when the app is run, but it will be populated with different ***default options*** depending on the context in which it is called.
-
-The main difference between the **Menu** and **Sub-menu** classes, is that sub-menus will be built inside the main menu. These ***lower level*** menus can be used for displaying actions for particular tasks, showing actions for child-tasks or for moving a task from one position to another.
-
-I could implement this so that a **new object** is created for each **sub-menu**, although I think it will be better to mirror what the **Menu class** does, and have a single **Sub-menu instance** that can load in different **default options** for different scenarios. I may need to include specific methods for constructing one-off menus, such as for moving tasks from one position to another.
-
-Much like the main menus, the sub-menu's will return **unique ID's** for tasks, and symbols for **default options**.
-
-### Process ARGV Module
-
-#### **Estimated Time:** *11 hours*
-#### **Priority:** *Medium*
-
-#### **Checklist**
-
-- brainstorm the design of the module *(1 hr)*
-- write the control flow logic for determining methods *(3 hrs)*
-- incorporate methods from the List class into the control flow *(3 hrs)*
-- write methods for giving user feedback and loading sub-menus *(1 hr)*
-- write tests for the module *(3 hrs)*
-
-#### **Outline:**
-
-This module will be used for handling command line arguments. As previously mentioned, all the methods that can be accessed inside the UI should also be achievable from the command line.
-
-For this to work we will simply pass the module the **ARGV** array where a control flow will decide what methods to perform based on the contents of the array.
-
-When running `ottr`, the module will check whether it has been **initialized**. If it has it will run the program, otherwise it will let the user know that `'ottr has not been initialized'`
-
-The module will need to include a method for initializing ottr. When the user runs `ottr init`, it should check whether a hidden file called `.ottr.json` exists in the current working directory. If it does it will return `'ottr already initialized'` but if it doesn't, it will call on the **JSON Handler** module to create the json file.
-
-Because the ***List Class*** contains all of the methods we need to interact with the array inside **json file**, it should be as easy as initiating a new instance of the **List Class** and using its methods to perform the various actions. A sub-menu may also be needed to make confirmations and name changes etc.
-
-### Create Main Loop
-
-#### **Estimated Time:** *11 hours*
-#### **Priority:** *High*
-
-#### **Checklist**
-
-- brainstorm the design of the main loop *(1 hr)*
-- write the control flow logic for the main program *(3 hrs)*
-- incorporate methods from the List, Menu and Sub-Menu classes into the control flow *(4 hrs)*
-- incorporate the Process ARGV module into the start of the program *(2 hour)*
-- identify points in the control flow where load/save, select/deselect methods should take place (think about unexpected quitting) *(1 hour)*
-
-#### **Outline:**
-
-The main loop for the program will be a control flow statement, it will implement all of the class and modules to facilitate the user's input and return output. 
-
-The control flow will keep looping back to the main menu, and the load/save & select/deselect methods will have to be strategically placed so that any unexpected termination of the program will not effect the performance of the app. *(e.g. all tasks must be deselected as soon as the program runs, in case it quit unexpectedly the last time and a task was still in a selected state.)*
-
-### Create Progress Bar
-
-#### **Estimated Time:** *2 hours 30 mins*
-#### **Priority:** *Low*
-
-#### **Checklist**
-
-- brainstorm the design of the Progress Bar *(30mins)*
-- learn how to use TTY-progress bar *(15mins)*
-- create Progress Bar class *(15 mins)*
-- write method for calculating how many tasks have been completed *(30 mins)*
-- implement Progress Bar into other classes *(1 hour)*
-
-#### **Outline:**
-
-The main loop for the program will be a control flow statement, it will implement all of the class and modules to facilitate the user's input and return output. 
-
-The control flow will keep looping back to the main menu, and the load/save & select/deselect methods will have to be strategically placed so that any unexpected termination of the program will not effect the performance of the app. *(e.g. all tasks must be deselected as soon as the program runs, in case it quit unexpectedly the last time and a task was still in a selected state.)*
-
-## <a name="trello"></a>Trello Board
-[back to top](#top)
-
-The trello board used during this project can be found [here](https://trello.com/invite/b/IUxAVH0w/2994084c7a723e0f590819e1a02e32b0/ottr)
-
-![Trello Board](./docs/trello.png)
-
-## <a name="testing"></a>Testing Procedure
-[back to top](#top)
-
-When beginning this project, my aim was to use **TDD** for the entire development process. A few tests in, however, I realised how difficult this would be - especially with my reliance on loading external json files. I researched a little bit into using mock files, but after getting more confused, and then consulting my educator; I decided it would be best to abstract out as much of the external file handling logic as possible to separate methods and test whatever was left.
-
-Even with this minimal testing approach, being new to testing in general really slowed me down. In order to get this project over the finish line in time, I decided to abandon the TDD approach, and rely on a few simple tests to tell me if the core logic of my program was working.
-
-I acknowledge that in the long run, not using TDD would have created more debugging time; however, to an inexperienced tester, using the TDD approach may have stopped me from getting this project finished in time. I want to go back and implement more tests as I develop this program in the future, and on the next project will try to implement a TDD approach for the entire development process.
-
-My core tests included 13 tests in the **list class** and **Process ARGV Module**
-
-The **List** tests included 9 tests in 2 different contexts, and ensured that:
-
-**given a task list:**
-- task lists were being passed to menus correctly
-- tasks' unique id's were being generated and returned correctly
-- new tasks were being added to the task list
-
-**given a task list with a selected task:**
-- selected tasks were returning the correct id's
-- selected tasks were being unselected properly
-- unselected tasks could be selected properly
-
-The **Process ARGV** included 4 tests, and ensured that:
-
-**given a list and task index:**
-- the argv processor could find whether a specific task index existed
-- the argv processor could find whether a specific child task existed in a parent task
-
-Although these tests were simple, they helped to give me valuable feedback when refactoring the application. A quick run of `rspec` confirmed that the fundamental list logic was still working, that lists were being provided to menus, and that the argv processor was accessing tasks correctly.
-
-## <a name="flow"></a>Flow Charts
-[back to top](#top)
-
-### General Flowchart
-
-![General Flowchart](./docs/general_flowchart.png)
-
-### Detailed Flowchart
+### Gems Used
+- [tty-prompt](https://github.com/piotrmurach/tty-prompt) by [Piotr Murach](https://github.com/piotrmurach)
+- [tty-box](https://github.com/piotrmurach/tty-box) by [Piotr Murach](https://github.com/piotrmurach)
+- [tty-progressbar](https://github.com/piotrmurach/tty-progressbar) by [Piotr Murach](https://github.com/piotrmurach)
+- [colorize](https://github.com/fazibear/colorize) by [Michael Kalbarczyk](https://github.com/fazibear)
+- [rubocop](https://github.com/rubocop/rubocop) by [Bozhidar Batsov](https://github.com/bbatsov)
+- [rspec](https://github.com/rspec/rspec-core) by [rspec](https://github.com/rspec)
+
+
+## <a name="flow"></a>Flow Chart
 
 ![Detailed Flowchart](./docs/flowchart.png)
