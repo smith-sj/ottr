@@ -212,63 +212,69 @@ Thanks to Murphy's code analyzer and formatter, [***Rubocop***](https://github.c
 
 ### Tasks
 
-The entire ottr application revolves around creating and organizing a list of tasks. The tasks themselves must have a collection of actions that can be performed on them. 
+The core functionality of ottr revolves around creating and organizing a list of tasks.
 
-Tasks will need to have different states; whether or not a task has been completed will decided whether it is in a ***complete*** or ***incomplete*** state; whether or not the task contains child-tasks will decide whether the task is in a ***parental*** or ***non-parental*** state. Depending on a task's state, it will have a different set of actions, or ***default options*** that can be performed on it.
+Tasks can have different states that determine their behavior:
+- **Complete** or **Incomplete**: Indicates whether the task has been finished.
+- **Parental** or **Non-parental**: Indicates whether the task contains child tasks.
 
-For example, here is a list of different states a task may be in, followed by a list of default options that the task will have:
+The state of a task determines the default options available for that task. For example:
+- A **non-parental, incomplete task** has the following options: *Complete, Rename, Move, Add Child-Task, Delete*.
+- A **parental, complete task** has the following options: *Rename, Move, Add Child-Task, Delete*.
 
-- **Non-parental, incomplete task**: *Complete, Rename, Move, Add Child-Task, Delete*
-- **Parental, complete task**: *Rename, Move, Add Child-Task, Delete*
+### Child-Tasks
 
-and so on...
+Ottr supports nesting tasks through child-tasks. Child-tasks allow users to break down larger tasks into smaller steps. Like regular tasks, child-tasks can have either a **complete** or **incomplete** state. However, child-tasks do not have a parental state, meaning they cannot contain other tasks.
 
-Another important aspect to note is that each task should have a ***unique ID***, that can be referenced when performing actions on them. This will mean we don't have to worry about errors relating to task names when performing methods on tasks. It also means that there is less validation required for task names, as long as it contains a character of some form and even if it shares the same name as another task, it will be valid.
-
-### Child-tasks
-
-A child-task is a task nested inside of another task. This feature will allow users to break down bigger tasks into smaller steps. Like regular tasks, child tasks will have complete or in-complete states, however they will not be able to nest other tasks, and so do not have a parental state.
-
-Child-tasks should have most of the same functionality as regular tasks depending on their state (*Complete, Rename, Move, Delete*).
+Child-tasks share most of the functionality of regular tasks, including actions such as *Complete, Rename, Move,* and *Delete*.
 
 ### Menu
 
-The main menu will contain a list of the **top level tasks** as well as the option to **add a new task** or **quit the program**. The tasks should be visibly different to the default options, as to avoid confusion, and it should be clear where the pointer is positioned.
+The main menu displays a list of all top-level tasks. From the main menu, users can:
+- View all tasks.
+- Add a new task.
+- Quit the program.
 
-### Sub-menus
+The menu interface clearly differentiates tasks from default options to avoid confusion. The pointer position is always visible, ensuring clarity when navigating.
 
-Sub-menus will pop up when a task or child-task is selected. They should show all of the child-tasks and default options associated with that task or child-task, but they should also display a greyed out view of the rest of the list, so that the user still has context as to where the sub-menu is popping up.
+### Sub-Menus
+
+Sub-menus are displayed when a task or child-task is selected. These menus show:
+- All child-tasks and the default options for the selected task.
+- A greyed-out view of the rest of the task list to maintain context.
+
+This structure ensures users always know where they are in the task hierarchy.
 
 ### Progress Bar
 
-This feature will provide a quick and easy way for the user to get an idea of how far through the project they are. The progress bar will be visible from both the main menu and sub-menu views, it will always display a visual representation of the **completed percentage** of all tasks. It should also indicate the fraction of completed tasks / total tasks.
+Ottr includes a progress bar to provide a quick visual representation of how much progress has been made. The progress bar:
+- Displays the **percentage of completed tasks**.
+- Shows the fraction of completed tasks compared to the total number of tasks.
+
+The progress bar is visible on both the main menu and sub-menu screens.
 
 ### Default Options
 
-The following options are considered a main feature of the program, as they will be what gives ottr its organizational qualities. Each option may behave slightly different between states and task types, but will perform the following actions:
+The default options available in Ottr provide the organizational features users need. These include:
 
-- ***Add Task***: Add a task to the main menu or a child-task to a parent-task's sub-menu
-- ***Complete***: Mark a task or child-task as complete
-- ***Re-open***: Mark a completed task or child-task as incomplete
-- ***Rename***: Rename a task or child-task
-- ***Move***: Move task or child-task to a different position in its list
-- ***Delete***: Delete a task from its list
-
+- **Add Task**: Add a task to the main menu or a child-task to a parent-task's sub-menu.
+- **Complete**: Mark a task or child-task as complete.
+- **Re-open**: Mark a completed task or child-task as incomplete.
+- **Rename**: Rename a task or child-task.
+- **Move**: Move a task or child-task to a different position in its list.
+- **Delete**: Delete a task or child-task from its list.
 
 ### Command Line Arguments Handler
 
-This feature will ensure everything that can be done from the ottr UI, will be achievable through command line arguments.
+All features available through the Ottr interface can also be accessed via command-line arguments. This allows users to perform actions directly without opening the app.
 
-For example, instead of launching ottr and selecting **Add Task** the user should be able to run a command directly from the directory such as `ottr add "name of task"`.
+For example:
+- `ottr init`: Initializes Ottr in the current directory.
+- `ottr help`: Displays a list of available commands.
+- `ottr log`: Prints the current task list to the terminal.
+- `ottr wipe`: Deletes all tasks.
 
-All commands from the **DEFAULT OPTIONS** section should be included in this feature as well as:
-
-- `ottr init` for initiating ottr in the directory
-- `ottr help` for displaying a list of commands
-- `ottr log` for printing the task list to the terminal
-- `ottr wipe` for wiping the entire task list
-
-In order to target specific tasks in the list, a numbering system will be implemented. When `ottr log` is run, the program should return something along the lines of:
+When `ottr log` is run, the task list is displayed with a numbering system, making it easy to target specific tasks or child-tasks. For example:
 
 ```
 1. Example of a task
@@ -281,9 +287,7 @@ In order to target specific tasks in the list, a numbering system will be implem
 
 The user should be able to access a main task by referencing its position in the list. `ottr del 2`, for example, should delete the 2nd task, labeled *'Another example of a task'*. Whereas something like `ottr del 1 3` should delete the 3rd child-task of the 1st task, labeled *'Another example of a child task'*.
 
-Some command line arguments like `ottr move` or `ottr rename` may require an extra prompt in the terminal for more user input or confirmation.
-
-Finally the command line handler should always print some form of feedback, to let the user know that their command worked, or didn't work.
+Certain commands, such as `ottr move` or `ottr rename`, may prompt the user for additional input or confirmation.
 
 ### Gems Used
 - [tty-prompt](https://github.com/piotrmurach/tty-prompt) by [Piotr Murach](https://github.com/piotrmurach)
